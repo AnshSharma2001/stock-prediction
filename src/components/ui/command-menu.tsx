@@ -58,7 +58,7 @@ export function CommandMenu() {
     <Command className="rounded-lg border relative overflow-visible">
       <CommandInput 
         ref={searchInputRef}
-        placeholder="Type a command or search..."
+        placeholder="Type a ⌘K to search."
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
