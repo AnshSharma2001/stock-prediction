@@ -6,7 +6,9 @@ import FixedRightBar from "@/components/fixed-right-bar/FixedRightBar";
 const Dashboard = () => {
   return (
     <div className="flex h-screen">
-      <div className=" flex-grow overflow-y-auto">this is component</div>
+      <div className=" flex-grow ">
+        <div className="">this is something</div>
+      </div>
       <FixedRightBar/>
     </div>
   );
