@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, startTransition } from "react";
 import { CalendarIcon } from "@radix-ui/react-icons"
 import BackgroundImage from "/public/landing_page_img.png";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +17,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { toast } from "@/components/ui/use-toast"
+import { RegisterSchema } from "../../../../schemas";
+import { register } from "../../../../actions/register";
 
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
@@ -30,40 +32,31 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-// Extend the form schema to include name, email, date of birth, and password fields
-const formSchema = z.object({
-  name: z.string().min(1, "Please enter your name."),
-  email: z.string().email("Please enter a valid email address."),
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  password: z.string().min(6, "Password must be at least 6 characters long."),
-});
-
-// Update the type for the form values to include the new fields
-type FormValues = {
-  name: string;
-  email: string;
-  dob: Date;
-  password: string;
-};
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 
 export function Register() {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
   const { theme } = useTheme();
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer <typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       name: "",
       email: "",
-      dob: new Date(),
       password: "",
     },
   });
 
-  const onSubmit = (values: FormValues) => {
-    console.log(values); // Placeholder for actual submission logic
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+    startTransition(() => {
+      register(values)
+      .then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      })
+    })
   };
 
   return (
@@ -116,47 +109,6 @@ export function Register() {
                 )}
               />
               <FormField
-          control={form.control}
-          name="dob"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[300px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-              <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
@@ -169,13 +121,15 @@ export function Register() {
                   </FormItem>
                 )}
               />
+              <FormError message={error}/>
+              <FormSuccess message={success}/>
               <div className="mt-6 flex flex-col items-center justify-center gap-4">
                 <Button className="w-full" type="submit">Register</Button>
               </div>
             </form>
             <div className="w-[300px] mt-6 flex flex-col items-center justify-center gap-4">
-                <Button variant="secondary" className="w-full" onClick={() => router.push("/login")}>Login</Button>
-              </div>
+              <Button variant="secondary" className="w-full" onClick={() => router.push("/login")}>Login</Button>
+            </div>
           </Form>
         </div>
       </div>
