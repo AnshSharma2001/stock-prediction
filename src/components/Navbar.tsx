@@ -26,9 +26,9 @@ export default function Navbar() {
   const { theme } = useTheme();
 
   const menus = [
-    { title: "Dashboard", path: "/landingpage/dashboard", id: 1 },
-    { title: "About", path: "/landingpage/about", id: 2 },
-    { title: "Profile", path: "/landingpage/profile", id: 3 },
+    { title: "Dashboard", path: "/dashboard", id: 1 },
+    { title: "About", path: "/about", id: 2 },
+    { title: "Profile", path: "/profile", id: 3 },
   ];
 
   // Function to determine the className based on whether the item is selected
