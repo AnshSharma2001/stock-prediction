@@ -11,42 +11,46 @@ import { useTheme } from "next-themes";
 
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ModeToggle } from "./ui/mode-toggle";
 import { CommandMenu } from "./ui/command-menu";
+import DropDownNav from "./dropdown-nav";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const [selected, setSelected] = React.useState(1); // default to dashboard
   const { theme } = useTheme();
+  const pathname = usePathname();
 
   const menus = [
-    { title: "Dashboard", path: "/landingpage/dashboard", id: 1 },
-    { title: "About", path: "/landingpage/about", id: 2 },
-    { title: "Profile", path: "/landingpage/profile", id: 3 },
+    { title: "Dashboard", path: "/dashboard", id: 1 },
+    { title: "About", path: "/about", id: 2 },
   ];
 
   // Function to determine the className based on whether the item is selected
-  const getItemClassName = (menuId: number) => {
+  const getItemClassName = (menuPath: string) => {
     return cn(
       navigationMenuTriggerStyle(), // Apply default styles
-      menuId === selected
+      pathname === menuPath
         ? "bg-accent text-accent-foreground"
         : "bg-background text-foreground" // Conditional class; change "text-blue-500" and "text-gray-700" as needed
     );
   };
 
   return (
-    <nav className="w-full flex h-20 justify-between items-center px-4 sticky top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
+    <nav className="flex h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
       <div className="ms-4">
-        <Link href="/landingpage/dashboard">
+        <Link href="/dashboard">
           <Image
-            src={theme === "light" ? LogoLight : theme === "dark" ? LogoDark : LogoSystem}
+            src={
+              theme === "light"
+                ? LogoLight
+                : theme === "dark"
+                ? LogoDark
+                : LogoSystem
+            }
             alt="Logo"
             width={50}
             height={50}
@@ -63,15 +67,14 @@ export default function Navbar() {
               <NavigationMenuItem key={menu.id}>
                 <Link href={menu.path} legacyBehavior passHref>
                   <NavigationMenuLink
-                    className={getItemClassName(menu.id)}
-                    onClick={() => setSelected(menu.id)} // Update selected state on click
+                    className={getItemClassName(menu.path)} // Update selected state
                   >
                     {menu.title}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             ))}
-            <ModeToggle />
+            <DropDownNav />
           </NavigationMenuList>
         </NavigationMenu>
       </div>

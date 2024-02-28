@@ -9,7 +9,7 @@ const LandingPage = () => {
   return (
     <div>
       <>
-        {router.push('landingpage/dashboard/')}
+        {router.push('/dashboard')}
       </>
     </div>
   )
