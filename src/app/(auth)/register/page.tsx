@@ -1,46 +1,36 @@
 "use client";
 
 import React, { useState, startTransition } from "react";
-import { CalendarIcon } from "@radix-ui/react-icons"
 import BackgroundImage from "/public/landing_page_img.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils"
-import { format } from "date-fns";
 import { useTheme } from "next-themes";
-import { Calendar } from "@/components/ui/calendar"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { toast } from "@/components/ui/use-toast"
-import { RegisterSchema } from "../../../../schemas";
-import { register } from "../../../../actions/register";
+import Image from "next/image";
 
-import Image from 'next/image';
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
+import { Button } from "@/components/ui/button";
+import { register } from "../../../../actions/register";
+import { RegisterSchema } from "../../../../schemas";
 
 export function Register() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
   const { theme } = useTheme();
-  const form = useForm<z.infer <typeof RegisterSchema>>({
+  const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
       name: "",
@@ -51,12 +41,11 @@ export function Register() {
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     startTransition(() => {
-      register(values)
-      .then((data) => {
+      register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
-      })
-    })
+      });
+    });
   };
 
   return (
@@ -81,7 +70,10 @@ export function Register() {
           />
           <h1 className="text-3xl font-bold mb-8 mt-10">Create Account</h1>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-[300px]">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-5 w-[300px]"
+            >
               <FormField
                 control={form.control}
                 name="name"
@@ -121,14 +113,22 @@ export function Register() {
                   </FormItem>
                 )}
               />
-              <FormError message={error}/>
-              <FormSuccess message={success}/>
+              <FormError message={error} />
+              <FormSuccess message={success} />
               <div className="mt-6 flex flex-col items-center justify-center gap-4">
-                <Button className="w-full" type="submit">Register</Button>
+                <Button className="w-full" type="submit">
+                  Register
+                </Button>
               </div>
             </form>
             <div className="w-[300px] mt-6 flex flex-col items-center justify-center gap-4">
-              <Button variant="secondary" className="w-full" onClick={() => router.push("/login")}>Login</Button>
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </Button>
             </div>
           </Form>
         </div>
