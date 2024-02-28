@@ -19,10 +19,10 @@ const stocks = [
 const FixedRightBar = () => {
   return (
     <div
-      className="flex fixed top-40 right-20 bottom-20 "
+      className="flex top-40 right-20 bottom-20 "
       style={{ height: "calc(100vh - 200px)" }}
     >
-      <ScrollArea className=" h-full w-[330px] rounded-md border">
+      <ScrollArea className=" w-[330px] rounded-md border">
         <FixedRightBarItem title="Trending" items={stocks} />
         <FixedRightBarItem title="Models" items={stocks} />
         <FixedRightBarItem title="Your Picks" items={stocks} />

@@ -1,14 +1,12 @@
-"use client"
-import * as React from "react"
+"use client";
+import * as React from "react";
 import {
-  CalendarIcon,
-  EnvelopeClosedIcon,
-  FaceIcon,
+  QuestionMarkCircledIcon,
   GearIcon,
   PersonIcon,
-  RocketIcon,
-} from "@radix-ui/react-icons"
- 
+  DashboardIcon,
+} from "@radix-ui/react-icons";
+
 import {
   Command,
   CommandEmpty,
@@ -18,12 +16,10 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/ui/command"
-import { useState } from "react"
-import { useRouter } from "next/navigation" 
-import { useRef, useEffect } from "react"
-
-
+} from "@/components/ui/command";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useEffect } from "react";
 
 export function CommandMenu() {
   const [visibility, setVisibility] = useState(false);
@@ -32,14 +28,15 @@ export function CommandMenu() {
 
   useEffect(() => {
     const toggleDropdownAndFocusSearch = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setVisibility((vis) => !vis);
       }
     };
 
-    document.addEventListener('keydown', toggleDropdownAndFocusSearch);
-    return () => document.removeEventListener('keydown', toggleDropdownAndFocusSearch);
+    document.addEventListener("keydown", toggleDropdownAndFocusSearch);
+    return () =>
+      document.removeEventListener("keydown", toggleDropdownAndFocusSearch);
   }, []);
 
   useEffect(() => {
@@ -56,48 +53,43 @@ export function CommandMenu() {
 
   return (
     <Command className="rounded-lg border relative overflow-visible">
-      <CommandInput 
+      <CommandInput
         ref={searchInputRef}
         placeholder="Type a ⌘K to search."
         onFocus={handleFocus}
         onBlur={handleBlur}
       />
-      
-      <CommandList className={`absolute top-10 w-full ${visibility ? "" : "hidden"}`}>
+
+      <CommandList
+        className={`absolute top-10 w-full ${visibility ? "" : "hidden"}`}
+      >
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">
-          <CommandItem onSelect={() => router.push('/login')}>
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            <span>Calendar</span>
+          {/* Dashboard */}
+          <CommandItem onSelect={() => router.push("/dashboard")}>
+            <DashboardIcon className="mr-2 h-4 w-4" />
+            <span>Dashboard</span>
           </CommandItem>
-          <CommandItem>
-            <FaceIcon className="mr-2 h-4 w-4" />
-            <span>Search Emoji</span>
+
+          {/* About */}
+          <CommandItem onSelect={() => router.push("/about")}>
+            <QuestionMarkCircledIcon className="mr-2 h-4 w-4" />
+            <span>About</span>
           </CommandItem>
-          <CommandItem>
-            <RocketIcon className="mr-2 h-4 w-4" />
-            <span>Launch</span>
-          </CommandItem>
-        </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="Settings">
-          <CommandItem>
+
+          {/* Profile */}
+          <CommandItem onSelect={() => router.push("/profile")}>
             <PersonIcon className="mr-2 h-4 w-4" />
             <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
           </CommandItem>
-          <CommandItem>
-            <EnvelopeClosedIcon className="mr-2 h-4 w-4" />
-            <span>Mail</span>
-            <CommandShortcut>⌘B</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
+
+          {/* Settings */}
+          <CommandItem onSelect={() => router.push("/settings")}>
             <GearIcon className="mr-2 h-4 w-4" />
             <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>
     </Command>
-  )
+  );
 }
