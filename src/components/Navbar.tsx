@@ -40,7 +40,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="flex h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
+    <nav className="flex shrink-0 h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
       <div className="ms-4">
         <Link href="/dashboard">
           <Image

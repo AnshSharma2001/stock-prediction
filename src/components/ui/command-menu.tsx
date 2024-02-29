@@ -52,7 +52,7 @@ export function CommandMenu() {
   };
 
   return (
-    <Command className="rounded-lg border relative overflow-visible">
+    <Command className="hidden sm:block sm:rounded-lg sm:border sm:relative sm:overflow-visible">
       <CommandInput
         ref={searchInputRef}
         placeholder="Type a ⌘K to search."
