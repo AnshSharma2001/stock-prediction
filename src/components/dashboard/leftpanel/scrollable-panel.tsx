@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const ScrollPanel = () => {
   return (
@@ -7,13 +8,15 @@ export const ScrollPanel = () => {
       className=" w-full md:basis-3/4 overflow-auto"
       style={{ maxHeight: "calc(100vh - 80px)" }}
     >
-      <div className="mt-[60px] flex flex-col items-center">
-        <div className="">content</div>
-        {Array(100)
-          .fill(0)
-          .map((_, index) => (
-            <div key={index}>content</div>
-          ))}
+      <div className="mt-[62px] flex flex-col items-center mx-40 gap-y-8">
+        {/* Just a broilerplate skeleton to accomodate the new design and add lazy loading when data is fetched from the backend. */}
+        <Skeleton className=" w-full h-[500px]  mb-4" />
+        <div className="w-full flex justify-between h-20">
+          <Skeleton className="  w-[150px] " />
+          <Skeleton className=" w-[150px]" />
+          <Skeleton className=" w-[150px]" />
+          <Skeleton className=" w-[150px]" />
+        </div>
       </div>
     </ScrollArea>
   );
