@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CreateModel = () => {
-  return (
-    <div>
-      Create Model
-    </div>
-  )
-}
+  return <div>Create Model</div>;
+};
 
-export default CreateModel
+export default CreateModel;
