@@ -1,6 +1,8 @@
 import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import { ModelRankSection } from "./model-rank-section";
 
 export const ScrollPanel = () => {
   return (
@@ -17,6 +19,8 @@ export const ScrollPanel = () => {
           <Skeleton className=" w-[150px]" />
           <Skeleton className=" w-[150px]" />
         </div>
+
+        <ModelRankSection />
       </div>
     </ScrollArea>
   );
