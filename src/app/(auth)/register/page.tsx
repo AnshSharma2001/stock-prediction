@@ -40,15 +40,12 @@ export function Register() {
   });
 
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
-    // startTransition(() => {
-    //   register(values).then((data) => {
-    //     setError(data.error);
-    //     setSuccess(data.success);
-    //   });
-    // });
-    const data = await register(values)
-    setError(data.error);
-    setSuccess(data.success);
+    startTransition(() => {
+      register(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
   };
 
   return (

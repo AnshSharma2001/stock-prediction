@@ -21,7 +21,7 @@ import { CommandMenu } from "./ui/command-menu";
 import DropDownNav from "./dropdown-nav";
 import { usePathname } from "next/navigation";
 import { set } from "date-fns";
-import AddMLModal from "@/components/Modal";
+import AddMLModal from "@/components/AddMLModal";
 // import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import {
   Dialog,
@@ -78,14 +78,6 @@ export default function Navbar() {
       <div className="relative lg:block lg:w-1/3">
         <CommandMenu />
       </div>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogTrigger asChild>
-          <Button variant="secondary" onClick={openModal}>
-            <PlusIcon></PlusIcon>
-          </Button>
-        </DialogTrigger>
-        <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
-      </Dialog>
       <div>
         <NavigationMenu>
           <NavigationMenuList className="flex gap-2 pr-10">
@@ -100,6 +92,14 @@ export default function Navbar() {
                 </Link>
               </NavigationMenuItem>
             ))}
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DialogTrigger asChild>
+                <Button variant="secondary" onClick={openModal}>
+                  <PlusIcon></PlusIcon>
+                </Button>
+              </DialogTrigger>
+              <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
+            </Dialog>
             <DropDownNav />
           </NavigationMenuList>
         </NavigationMenu>
