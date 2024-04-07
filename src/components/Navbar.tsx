@@ -31,8 +31,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { PlusIcon } from "@radix-ui/react-icons";
+import {
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+} from "./ui/tooltip";
 
 export default function Navbar() {
   const { theme } = useTheme();
@@ -53,7 +59,7 @@ export default function Navbar() {
     );
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -94,9 +100,18 @@ export default function Navbar() {
             ))}
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogTrigger asChild>
-                <Button variant="secondary" onClick={openModal}>
-                  <PlusIcon></PlusIcon>
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button size="sm" variant="secondary" onClick={openModal}>
+                        <PlusIcon className=" w-4 h-4 font-bold" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Create a model</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </DialogTrigger>
               <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
             </Dialog>
