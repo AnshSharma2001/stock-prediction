@@ -13,11 +13,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         return {error: "Invalid fields!"};
     }
 
-    const { email, password } = validatedFields.data;
+    const { username, password } = validatedFields.data;
 
     try {
         await signIn("credentials", {
-            email, 
+            username, 
             password,
             redirectTo: DEFAULT_LOGIN_REDIRECT,
         })
@@ -34,4 +34,28 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         }
         throw error;
     }
+
+    // const response = await fetch('http://3.129.67.70/auth/login', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         username,
+    //         password,
+    //     })
+    // });
+
+    // if(!response.ok) {
+    //     throw new Error(`HTTP error! Status: ${response.status}`);
+    // }
+
+    // const data = await response.json();
+    // console.log(data.access_token)
+    // if (data.access_token) {
+    //     return { success: "success", access_token: data.access_token};
+    // }
+    // else {
+    //     return { error: "Error: Login Failed" };
+    // }
 }

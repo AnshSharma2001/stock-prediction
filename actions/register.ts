@@ -2,10 +2,11 @@
 
 import * as z from "zod";
 import bcrypt from "bcrypt";
-
-import { db } from "@/lib/db";
+import { useState } from "react";
+// import { db } from "@/lib/db";
 import { RegisterSchema } from "../schemas";
-import { getUserByEmail } from "../data/user";
+import { setSeconds } from "date-fns";
+// import { getUserByEmail } from "../data/user";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validatedFields = RegisterSchema.safeParse(values);
@@ -14,24 +15,48 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         return {error: "Invalid fields!"};
     }
 
-    const { email, password, name } = validatedFields.data;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { email, password, username } = validatedFields.data;
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
-    const existingUser = await getUserByEmail(email);
+    const response = await fetch('http://3.129.67.70/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email,
+            password,
+            username,
+        }),
+    });
 
-    if (existingUser) {
-        return { error: "Email already in use!"};
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`)
     }
 
-    await db.user.create({
-        data: {
-            name, 
-            email,
-            password: hashedPassword,
-        }
-    })
+    const data = await response.json();
+
+    if(data.message) {
+        return { success: data.message};
+    }
+    else{
+        return { error: `Error: Registration Failed`};
+    }
+    // const existingUser = await getUserByEmail(email);
+
+    // if (existingUser) {
+    //     return { error: "Email already in use!"};
+    // }
+
+    // await db.user.create({
+    //     data: {
+    //         name, 
+    //         email,
+    //         password: hashedPassword,
+    //     }
+    // })
 
     //TODO: Send verification token email
 
-    return { success: "User created!"};
+    // return { success: "User created!"};
 }

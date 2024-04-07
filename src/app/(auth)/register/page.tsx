@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, startTransition } from "react";
+import React, { useState, useEffect, startTransition } from "react";
 import BackgroundImage from "/public/landing_page_img.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -33,19 +33,22 @@ export function Register() {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-      });
-    });
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+    // startTransition(() => {
+    //   register(values).then((data) => {
+    //     setError(data.error);
+    //     setSuccess(data.success);
+    //   });
+    // });
+    const data = await register(values)
+    setError(data.error);
+    setSuccess(data.success);
   };
 
   return (
@@ -76,10 +79,10 @@ export function Register() {
             >
               <FormField
                 control={form.control}
-                name="name"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>

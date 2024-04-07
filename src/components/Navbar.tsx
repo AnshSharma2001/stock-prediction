@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -8,7 +9,6 @@ import LogoDark from "../../public/trademinds-logo-dark.png";
 import LogoLight from "../../public/trademinds-logo-light.png";
 import LogoSystem from "../../public/trademinds-logo-system.png";
 import { useTheme } from "next-themes";
-
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -16,9 +16,23 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
 import { CommandMenu } from "./ui/command-menu";
 import DropDownNav from "./dropdown-nav";
 import { usePathname } from "next/navigation";
+import { set } from "date-fns";
+import AddMLModal from "@/components/Modal";
+// import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export default function Navbar() {
   const { theme } = useTheme();
@@ -38,6 +52,10 @@ export default function Navbar() {
         : "bg-background text-foreground" // Conditional class; change "text-blue-500" and "text-gray-700" as needed
     );
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <nav className="flex shrink-0 h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
@@ -60,6 +78,14 @@ export default function Navbar() {
       <div className="relative lg:block lg:w-1/3">
         <CommandMenu />
       </div>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogTrigger asChild>
+          <Button variant="secondary" onClick={openModal}>
+            <PlusIcon></PlusIcon>
+          </Button>
+        </DialogTrigger>
+        <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
+      </Dialog>
       <div>
         <NavigationMenu>
           <NavigationMenuList className="flex gap-2 pr-10">
