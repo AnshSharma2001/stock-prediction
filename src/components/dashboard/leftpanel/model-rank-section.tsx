@@ -4,18 +4,6 @@ import React, { useState, useTransition, useEffect } from "react";
 import { ModelCategoryCarousel } from "./model-category-carousel";
 import fetch from 'node-fetch';
 
-export const getMseRanking = async () => {
-    const response = await fetch('http://3.129.67.70/general/models/average_mse_by_model_and_timeframe');
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const mseRankingData = await response.json();
-    return mseRankingData;
-}
-
-
 const sampleDataFromAPI = {
   models: [
     {
