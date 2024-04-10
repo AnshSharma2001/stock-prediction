@@ -10,10 +10,10 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 
-export const GeneralSection = () => {
+export const AccountSection = () => {
   return (
     <div className="grid gap-6">
-      <h1 className="text-lg font-bold text-foreground">General</h1>
+      <h1 className="text-lg font-bold text-foreground">Account</h1>
       {/* WARNING: DO NOT USE THIS WAY TO INITIALIZE THE FORMS THIS WAY USE ZOD INSTEAD.
           YOU CAN GOOGLE ABOUT ZOD, IF YOU STILL CANNOT FIGURE IT OUT LET ME KNOW ~ ANSH   
       */}
