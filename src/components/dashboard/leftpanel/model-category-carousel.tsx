@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { Heart, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BaseCard } from "@/components/model-card/base-card";
 
 interface Model {
   Description: string;
@@ -35,16 +36,9 @@ export const ModelCategoryCarousel = ({
   models,
 }: ModelCategoryCarouselProps) => {
   // TODO: UPDATE THE LIKES IN THE BACKEND AND REFLECT THAT ON EVERY MODEL BY DEFAULT
-  const [likes, setLikes] = useState<{ [modelId: number]: boolean }>({});
+  
 
-  const toggleLike = (modelId: number) => {
-    // Toggle the like state for the specific model
-    // If the model ID does not exist in the state, it defaults to false and then gets toggled to true
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [modelId]: !prevLikes[modelId],
-    }));
-  };
+
   return (
     <div className="w-full h-72">
       <h2 className="text-xl font-semibold">{rankingTitle}</h2>
@@ -61,43 +55,15 @@ export const ModelCategoryCarousel = ({
               key={model.Model_ID}
               className="md:basis-1/3 lg:basis-1/3 xl:basis-1/3"
             >
-              <div className="p-1 cursor-pointer">
-                <Card className=" bg-[blue] shadow-none">
-                  <CardContent className="relative flex h-48  p-0 overflow-hidden">
-                    <Image
-                      className="rounded-xl"
-                      fill
-                      src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      alt="some model image"
-                      objectFit="cover"
-                    />
-                  </CardContent>
-                </Card>
-                <div className="flex justify-between items-center pl-1">
-                  <div className="flex pt-1 flex-col justify-between items-start">
-                    <p className="text-sm font-semibold text-foreground">
-                      {model.Name}
-                    </p>
-                    <p className="text-xs font-semibold text-muted-foreground">
-                      {`${model.Subscribe_Count} subscribers`}
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => toggleLike(model.Model_ID)}
-                    variant="like"
-                    size="sm"
-                    className="mt-1 gap-x-1 items-center justify-center"
-                  >
-                    <Heart
-                      className={cn(
-                        "w-4 h-4 font-thin ",
-                        likes[model.Model_ID] && "fill-[#cd486b] text-[#cd486b]"
-                      )}
-                    />
-                    <p className="text-xs font-xs ">{model.Like_Count}</p>
-                  </Button>
-                </div>
-              </div>
+                <BaseCard
+                 Description={model.Description}
+                 Like_Count={model.Like_Count}
+                    Model_File_Path={model.Model_File_Path}
+                    Model_ID={model.Model_ID}
+                    Name={model.Name}
+                    Subscribe_Count={model.Subscribe_Count}
+                    UserID={model.UserID}
+                 />
             </CarouselItem>
           ))}
         </CarouselContent>
