@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { register } from "../../../../actions/register";
 import { RegisterSchema } from "../../../../schemas";
 
-export function Register() {
+export default function Register() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
@@ -137,4 +137,3 @@ export function Register() {
   );
 }
 
-export default Register;
