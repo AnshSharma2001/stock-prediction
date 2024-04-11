@@ -27,7 +27,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 // Adapt the ProfileForm function to a Login form, including password handling
-export function LoginForm() {
+export default function LoginForm() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter(); 
@@ -141,4 +141,3 @@ export function LoginForm() {
   );
 }
 
-export default LoginForm;
