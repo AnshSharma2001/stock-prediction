@@ -1,15 +1,12 @@
 "use client";
 
-import { SessionProvider, useSession } from "next-auth/react";
-import React, { useState, useRef, useEffect, useTransition, FormEvent } from "react";
-import BackgroundImage from "/public/landing_page_img.png";
+import React, { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation"; 
 import { useTheme } from "next-themes";
 import { change_password } from "../../../actions/change_password";
-import { startTransition } from "react";
 import { ChangePasswordSchema } from "../../../schemas/index";
 import { FormSuccess } from "@/components/form-success";
 import { FormError } from "@/components/form-error";
@@ -24,19 +21,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 
-import { auth } from "../../../auth"
-import { getUserById } from "../../../data/user";
+import { Input } from "@/components/ui/input";
 
 
 export async function ProfileSection() {
@@ -48,7 +34,7 @@ export async function ProfileSection() {
   const form = useForm<z.infer<typeof ChangePasswordSchema>>({
     resolver: zodResolver(ChangePasswordSchema),
     defaultValues: {
-      email: "",
+      username: "",
       old_password: "",
       new_password: "",
     },
@@ -78,23 +64,6 @@ export async function ProfileSection() {
     });
   };
 
-  // const { data: session, update } = useSession();
-  // console.log(session);
-
-  // const { register, watch } = useFormContext();
-
-  // Fetch the user's name (replace with your actual logic)
-  // const [name, setName] = useState('');
-  // useEffect(() => {
-  //   const fetchName = async () => {
-  //     const fetchedName = await getUserById(session.id); // Replace with your API call
-  //     setName(fetchedName);
-  //   };
-  //   fetchName();
-  // }, []);
-
-  // const currentName = watch('name'); // Watch the name field
-
   return (
     <div className="grid gap-2">
     {/* WARNING: DO NOT USE THIS WAY TO INITIALIZE THE FORMS THIS WAY USE ZOD INSTEAD.
@@ -109,14 +78,14 @@ export async function ProfileSection() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-[300px]">
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input
                   disabled={isPending}
-                  type="email"
+                  type="username"
                   {...field}
                 />
               </FormControl>

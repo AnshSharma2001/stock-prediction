@@ -10,7 +10,7 @@ export const change_password = async (values: z.infer<typeof ChangePasswordSchem
         return {error: "Invalid fields!"};
     }
 
-    const { email, old_password, new_password } = validatedFields.data;
+    const { username, old_password, new_password } = validatedFields.data;
 
     const response = await fetch('http://3.129.67.70/auth/change_password', {
         method: 'POST',
@@ -18,7 +18,7 @@ export const change_password = async (values: z.infer<typeof ChangePasswordSchem
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            email,
+            username,
             old_password,
             new_password,
         }),
