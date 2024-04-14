@@ -20,18 +20,9 @@ import { Button } from "@/components/ui/button";
 import { CommandMenu } from "./ui/command-menu";
 import DropDownNav from "./dropdown-nav";
 import { usePathname } from "next/navigation";
-import { set } from "date-fns";
 import AddMLModal from "@/components/AddMLModal";
 // import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { PlusIcon } from "@radix-ui/react-icons";
 import {
   TooltipProvider,
@@ -47,6 +38,7 @@ export default function Navbar() {
   const menus = [
     { title: "Dashboard", path: "/dashboard", id: 1 },
     { title: "About", path: "/about", id: 2 },
+    { title: "Models", path: "/view-models", id: 3 },
   ];
 
   // Function to determine the className based on whether the item is selected
@@ -64,7 +56,24 @@ export default function Navbar() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <nav className="flex shrink-0 h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
+    <nav
+      className="
+      fixed 
+      shrink-0 
+      h-20 
+      w-full 
+      flex 
+      justify-between 
+      items-center 
+      px-4 
+      backdrop-filter 
+      backdrop-blur-md 
+      bg-opacity-30 
+      py-5 
+
+      z-10
+      "
+    >
       <div className="ms-4">
         <Link href="/dashboard">
           <Image

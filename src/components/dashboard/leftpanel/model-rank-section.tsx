@@ -99,7 +99,7 @@ export const ModelRankSection = () => {
   // TODO: Ideally would map over here as well.
   const { models } = sampleDataFromAPI;
   return (
-    <div className="pt-8 grid grid-cols-1 space-y-20 w-full mb-10">
+    <div className="pt-8 grid grid-cols-1 space-y-20 w-full lg:max-w-[70%] mb-10">
       <ModelCategoryCarousel rankingTitle="Trending in Tech" models={models} />
       <ModelCategoryCarousel
         rankingTitle="Trending in Finance"
