@@ -66,105 +66,81 @@ export async function ProfileSection() {
 
   return (
     <div className="grid gap-2">
-    {/* WARNING: DO NOT USE THIS WAY TO INITIALIZE THE FORMS THIS WAY USE ZOD INSTEAD.
+      {/* WARNING: DO NOT USE THIS WAY TO INITIALIZE THE FORMS THIS WAY USE ZOD INSTEAD.
         YOU CAN GOOGLE ABOUT ZOD, IF YOU STILL CANNOT FIGURE IT OUT LET ME KNOW ~ ANSH   
     */}
-    <h1 className="text-3xl font-bold mb-8 mt-10">Profile</h1>
-    <div className="grid gap-0.5">
-    <h2 className="text-xl font-semibold mb-8">
-      Update Password
-    </h2>
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-[300px]">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={isPending}
-                  type="username"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="old_password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Old Password</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={isPending}
-                  type="old_password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="new_password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>New Password</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={isPending}
-                  type="new_password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormError message={error} />
-        <FormSuccess message={success} />
-        <div className="mt-6 flex flex-col items-center justify-center gap-4">
-          <Button className="w-full" type="submit" disabled={isPending}>Change Password</Button>
-        </div>
-      </form>
-    </Form>
+      <h1 className="text-3xl font-bold mb-8 mt-10">Profile</h1>
+      <div className="grid gap-0.5">
+        <h2 className="text-xl font-semibold mb-8">Update Password</h2>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-5 w-[300px]"
+          >
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      type="username"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="old_password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Old Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      type="old_password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="new_password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>New Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      type="new_password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormError message={error} />
+            <FormSuccess message={success} />
+            <div className="mt-6 flex flex-col items-center justify-center gap-4">
+              <Button className="w-full" type="submit" disabled={isPending}>
+                Change Password
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
-  </div>
-
-  )
+  );
 }
-
-
-// export const ProfileSection = () => {
-//   return (
-//     <div className="grid gap-6">
-    //   <h1 className="text-lg font-bold text-foreground">Profile</h1>
-    //   {/* WARNING: DO NOT USE THIS WAY TO INITIALIZE THE FORMS THIS WAY USE ZOD INSTEAD.
-    //       YOU CAN GOOGLE ABOUT ZOD, IF YOU STILL CANNOT FIGURE IT OUT LET ME KNOW ~ ANSH   
-    //   */}
-    //   <Card x-chunk="dashboard-04-chunk-1">
-    //     <CardHeader>
-    //       <CardTitle>Name</CardTitle>
-    //       <CardDescription>Please enter your name to change it</CardDescription>
-    //     </CardHeader>
-    //     <CardContent>
-    //       <form>
-    //         <Input placeholder="Name" />
-    //       </form>
-    //     </CardContent>
-    //     <CardFooter className="border-t px-6 py-4">
-    //       <Button>Save</Button>
-    //     </CardFooter>
-    //   </Card>
-    // </div>
-//   );
-// };
 
 
 export default ProfileSection;
