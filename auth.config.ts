@@ -1,8 +1,7 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-import bcryptjs from "bcryptjs";
 import { LoginSchema } from "./schemas";
-import { access } from "fs";
+
 
 export default {
   providers: [
