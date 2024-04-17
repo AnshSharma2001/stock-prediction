@@ -41,13 +41,12 @@ export default function Navbar() {
     { title: "Models", path: "/view-models", id: 3 },
   ];
 
-  // Function to determine the className based on whether the item is selected
   const getItemClassName = (menuPath: string) => {
     return cn(
-      navigationMenuTriggerStyle(), // Apply default styles
+      navigationMenuTriggerStyle(),
       pathname === menuPath
         ? "bg-accent text-accent-foreground"
-        : "bg-background text-foreground" // Conditional class; change "text-blue-500" and "text-gray-700" as needed
+        : "bg-background text-foreground"
     );
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,25 +55,8 @@ export default function Navbar() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <nav
-      className="
-      fixed 
-      shrink-0 
-      h-20 
-      w-full 
-      flex 
-      justify-between 
-      items-center 
-      px-4 
-      backdrop-filter 
-      backdrop-blur-md 
-      bg-opacity-30 
-      py-5 
-
-      z-10
-      "
-    >
-      <div className="ms-4">
+    <div className="p-4 flex items-center justify-between relative">
+      <aside className="flex items-center gap-2">
         <Link href="/dashboard">
           <Image
             src={
@@ -85,49 +67,50 @@ export default function Navbar() {
                 : LogoSystem
             }
             alt="Logo"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
           />
         </Link>
-      </div>
-      <div className="relative lg:block lg:w-1/3">
-        <CommandMenu />
-      </div>
-      <div>
-        <NavigationMenu>
-          <NavigationMenuList className="flex gap-2 pr-10">
-            {menus.map((menu) => (
-              <NavigationMenuItem key={menu.id}>
-                <Link href={menu.path} legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={getItemClassName(menu.path)} // Update selected state
-                  >
-                    {menu.title}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            ))}
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-              <DialogTrigger asChild>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button size="sm" variant="secondary" onClick={openModal}>
-                        <PlusIcon className=" w-4 h-4 font-bold" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Create a model</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </DialogTrigger>
-              <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
-            </Dialog>
-            <DropDownNav />
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-    </nav>
+        <span className="text-xl font-bold">Trademinds</span>
+      </aside>
+
+      <nav
+        className="hidden md:block absolute left-[50%] top-[50%] 
+      transform translate-x-[-50%] translate-y-[-50%]"
+      >
+        <ul className="flex items-center justify-center gap-8">
+          {menus.map((menu) => (
+            <Link href={menu.path} key={menu.id}>
+              <div
+                className={getItemClassName(menu.path)} // Update selected state
+              >
+                {menu.title}
+              </div>
+            </Link>
+          ))}
+        </ul>
+      </nav>
+
+      <aside className=" flex gap-2 items-center">
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogTrigger asChild>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant="secondary" onClick={openModal}>
+                    <PlusIcon className=" w-4 h-4 font-bold" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Create a model</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </DialogTrigger>
+          <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
+        </Dialog>
+        <DropDownNav />
+      </aside>
+    </div>
   );
 }

@@ -43,9 +43,9 @@ export const ModelCategoryCarousel = ({
   // TODO: UPDATE THE LIKES IN THE BACKEND AND REFLECT THAT ON EVERY MODEL BY DEFAULT
 
   return (
-    <div className="w-full h-72">
+    <div className="w-full flex flex-col">
       <h2 className="text-xl font-semibold">{rankingTitle}</h2>
-      <Separator className="my-4 w-full" />
+      <Separator className="my-4 " />
       <Carousel
         opts={{
           align: "start",
@@ -56,7 +56,7 @@ export const ModelCategoryCarousel = ({
           {models.map((model) => (
             <CarouselItem
               key={model.Model_ID}
-              className="md:basis-1/3 lg:basis-1/3 xl:basis-1/3"
+              className="basis-[100%] md:basis-1/3"
             >
               <BaseCard
                 Description={model.Description}
