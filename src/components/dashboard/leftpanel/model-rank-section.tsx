@@ -203,7 +203,7 @@ export const ModelRankSection: React.FC = () => {
   }, [models]);
 
   return (
-    <div className="pt-8 flex flex-col space-y-20 md:space-y-30 lg:space-y-40 w-full lg:max-w-[70%] mb-10 mx-0">
+    <div className="pt-8 flex flex-col space-y-20 md:space-y-30 w-full lg:max-w-[70%] mb-10 mx-0">
       {/* <div className="pt-8 grid grid-cols-1 space-y-20 md:space-y-0 gap-10 w-full lg:max-w-[70%] mb-10 mx-auto"> */}
       <ModelCategoryCarousel
         rankingTitle="Users Favorites for Technology"

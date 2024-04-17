@@ -14,7 +14,7 @@ const Dashboard = () => {
   // const session = await auth(); make the parent function async if this is used
 
   return (
-    <div className="flex space-x-4 ">
+    <div className="px-8">
       <ScrollPanel />
       {/* <FixedRightBar /> */}
     </div>
