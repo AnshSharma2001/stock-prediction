@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-
-import axios from 'axios';
 import { ModelCategoryCarousel } from "./model-category-carousel";
 
 interface Model {
@@ -39,35 +37,45 @@ type ModelCategory = {
   yearlyFinance: Model[];
 };
 
-const fetchMseRanking = async (): Promise<{ [key: string]: any }> => {
-  const mseUrl = 'http://3.129.67.70/general/models/average_mse_by_model_and_timeframe';
-  try {
-    const response = await axios.get(mseUrl);
-    return response.data;
-  } catch (error: any) {
-    throw new Error(`HTTP error! Status: ${error.response.status}`);
-  }
-};
-
 const fetchModelTags = async (): Promise<Tag[]> => {
   const mseUrl = 'http://3.129.67.70/general/modeltags';
   try {
-    const response = await axios.get(mseUrl);
-    return response.data;
+    const response = await fetch(mseUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
   } catch (error: any) {
-    throw new Error(`HTTP error! Status: ${error.response.status}`);
+    throw new Error(`Error fetching model tags: ${error.message}`);
   }
 };
 
 const fetchModels = async (): Promise<Model[]> => {
   const mseUrl = 'http://3.129.67.70/general/models';
   try {
-    const response = await axios.get(mseUrl);
-    return response.data;
+    const response = await fetch(mseUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
   } catch (error: any) {
-    throw new Error(`HTTP error! Status: ${error.response.status}`);
+    throw new Error(`Error fetching models: ${error.message}`);
   }
 };
+
+const fetchMseRanking = async (): Promise<{ [key: string]: any }> => {
+  const mseUrl = 'http://3.129.67.70/general/models/average_mse_by_model_and_timeframe';
+  try {
+    const response = await fetch(mseUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  } catch (error: any) {
+    throw new Error(`Error fetching MSE ranking: ${error.message}`);
+  }
+};
+
 
 const rankModelsByMSE = (models: Model[], interval: 'daily' | 'weekly' | 'monthly' | 'yearly' = 'monthly'): Model[] => {
   const mseProperty = `${interval}MSE` as keyof Model;
