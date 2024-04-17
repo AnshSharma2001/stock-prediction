@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BaseCard } from "@/components/model-card/base-card";
 
-
 interface Model {
   Description: string;
   Like_Count: number;
@@ -43,8 +42,6 @@ export const ModelCategoryCarousel = ({
 }: ModelCategoryCarouselProps) => {
   // TODO: UPDATE THE LIKES IN THE BACKEND AND REFLECT THAT ON EVERY MODEL BY DEFAULT
 
-  
-
   return (
     <div className="w-full h-72">
       <h2 className="text-xl font-semibold">{rankingTitle}</h2>
@@ -61,15 +58,15 @@ export const ModelCategoryCarousel = ({
               key={model.Model_ID}
               className="md:basis-1/3 lg:basis-1/3 xl:basis-1/3"
             >
-                <BaseCard
-                 Description={model.Description}
-                 Like_Count={model.Like_Count}
-                    Model_File_Path={model.Model_File_Path}
-                    Model_ID={model.Model_ID}
-                    Name={model.Name}
-                    Subscribe_Count={model.Subscribe_Count}
-                    UserID={model.UserID}
-                 />
+              <BaseCard
+                Description={model.Description}
+                Like_Count={model.Like_Count}
+                Model_File_Path={model.Model_File_Path}
+                Model_ID={model.Model_ID}
+                Name={model.Name}
+                Subscribe_Count={model.Subscribe_Count}
+                UserID={model.UserID}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>

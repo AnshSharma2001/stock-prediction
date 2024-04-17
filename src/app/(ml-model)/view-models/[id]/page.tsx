@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 interface Model {
@@ -35,12 +41,16 @@ const ModelPage = () => {
     if (modelId) {
       const fetchModelDetails = async () => {
         try {
-          const response = await fetch(`http://3.129.67.70/general/models/${modelId}`);
-          if (!response.ok) throw new Error('Failed to fetch model data');
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models/${modelId}`
+          );
+          if (!response.ok) throw new Error("Failed to fetch model data");
           const modelData = await response.json();
 
-          const tagsResponse = await fetch(`http://3.129.67.70/general/modeltags/${modelId}`);
-          if (!tagsResponse.ok) throw new Error('Failed to fetch tags data');
+          const tagsResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/modeltags/${modelId}`
+          );
+          if (!tagsResponse.ok) throw new Error("Failed to fetch tags data");
           const tagsData: Tag[] = await tagsResponse.json();
 
           setModel({ ...modelData, Tags: tagsData });
@@ -63,13 +73,15 @@ const ModelPage = () => {
       <Card className="w-full max-w-4xl rounded-lg overflow-hidden shadow-lg text-white">
         {/* ... */}
         <CardHeader>
-            <CardTitle>{model.Model_Name}</CardTitle>
-            <CardDescription>{model.Description}</CardDescription>
-            <div className="flex flex-wrap gap-2 mt-2">
-                {model.Tags.map((tag) => (
-                    <Badge key={tag.TagID} variant="secondary">{tag.Name}</Badge>
-                ))}
-            </div>
+          <CardTitle>{model.Model_Name}</CardTitle>
+          <CardDescription>{model.Description}</CardDescription>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {model.Tags.map((tag) => (
+              <Badge key={tag.TagID} variant="secondary">
+                {tag.Name}
+              </Badge>
+            ))}
+          </div>
         </CardHeader>
         <CardContent>
           <p className="text-sm">{model.Creator_Name}</p>

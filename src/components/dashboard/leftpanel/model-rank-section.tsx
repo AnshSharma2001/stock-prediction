@@ -38,7 +38,7 @@ type ModelCategory = {
 };
 
 const fetchModelTags = async (): Promise<Tag[]> => {
-  const mseUrl = 'http://3.129.67.70/general/modeltags';
+  const mseUrl = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/modeltags`;
   try {
     const response = await fetch(mseUrl);
     if (!response.ok) {
@@ -51,7 +51,7 @@ const fetchModelTags = async (): Promise<Tag[]> => {
 };
 
 const fetchModels = async (): Promise<Model[]> => {
-  const mseUrl = 'http://3.129.67.70/general/models';
+  const mseUrl = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models`;
   try {
     const response = await fetch(mseUrl);
     if (!response.ok) {
@@ -64,7 +64,8 @@ const fetchModels = async (): Promise<Model[]> => {
 };
 
 const fetchMseRanking = async (): Promise<{ [key: string]: any }> => {
-  const mseUrl = 'http://3.129.67.70/general/models/average_mse_by_model_and_timeframe';
+  const mseUrl = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models/average_mse_by_model_and_timeframe`;
+  console.log(mseUrl);
   try {
     const response = await fetch(mseUrl);
     if (!response.ok) {
@@ -76,29 +77,33 @@ const fetchMseRanking = async (): Promise<{ [key: string]: any }> => {
   }
 };
 
-
-const rankModelsByMSE = (models: Model[], interval: 'daily' | 'weekly' | 'monthly' | 'yearly' = 'monthly'): Model[] => {
+const rankModelsByMSE = (
+  models: Model[],
+  interval: "daily" | "weekly" | "monthly" | "yearly" = "monthly"
+): Model[] => {
   const mseProperty = `${interval}MSE` as keyof Model;
 
-  return models.slice().sort((a, b) => {
-    const mseA = Number(a[mseProperty] ?? Infinity);
-    const mseB = Number(b[mseProperty] ?? Infinity);
-    return mseA - mseB;
-  }).slice(0, 5);
+  return models
+    .slice()
+    .sort((a, b) => {
+      const mseA = Number(a[mseProperty] ?? Infinity);
+      const mseB = Number(b[mseProperty] ?? Infinity);
+      return mseA - mseB;
+    })
+    .slice(0, 5);
 };
 
-
 const filterModelsByTag = (models: Model[], tag: string): Model[] => {
-  return models.filter(model => model.Tags?.includes(tag));
+  return models.filter((model) => model.Tags?.includes(tag));
 };
 
 const rankModelslikes = (models: Model[]): Model[] => {
-  return [...models].sort((a, b) => (b.Like_Count ?? 0) - (a.Like_Count ?? 0)).slice(0, 5);
+  return [...models]
+    .sort((a, b) => (b.Like_Count ?? 0) - (a.Like_Count ?? 0))
+    .slice(0, 5);
 };
 
-
 export const ModelRankSection: React.FC = () => {
-
   const [models, setModels] = useState<Model[]>([]);
   const [modelCategories, setModelCategories] = useState<ModelCategory>({
     favTech: [],
@@ -118,15 +123,29 @@ export const ModelRankSection: React.FC = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const [fetchedModels, fetchedTags, mseData] = await Promise.all([fetchModels(), fetchModelTags(), fetchMseRanking()]);
-        const taggedModels = fetchedModels.map(model => ({
+        const [fetchedModels, fetchedTags, mseData] = await Promise.all([
+          fetchModels(),
+          fetchModelTags(),
+          fetchMseRanking(),
+        ]);
+        const taggedModels = fetchedModels.map((model) => ({
           ...model,
           Name: model.Model_Name,
-          Tags: fetchedTags.filter(tag => tag.Model_ID === model.Model_ID).map(tag => tag.Name),
-          dailyMSE: mseData[model.Model_ID] ? mseData[model.Model_ID]["Previous 1 Day"] : undefined,
-          weeklyMSE: mseData[model.Model_ID] ? mseData[model.Model_ID]["Previous Week"] : undefined,          
-          monthlyMSE: mseData[model.Model_ID] ? mseData[model.Model_ID]["Previous Month"] : undefined,
-          yearlyMSE: mseData[model.Model_ID] ? mseData[model.Model_ID]["Previous Year"] : undefined,
+          Tags: fetchedTags
+            .filter((tag) => tag.Model_ID === model.Model_ID)
+            .map((tag) => tag.Name),
+          dailyMSE: mseData[model.Model_ID]
+            ? mseData[model.Model_ID]["Previous 1 Day"]
+            : undefined,
+          weeklyMSE: mseData[model.Model_ID]
+            ? mseData[model.Model_ID]["Previous Week"]
+            : undefined,
+          monthlyMSE: mseData[model.Model_ID]
+            ? mseData[model.Model_ID]["Previous Month"]
+            : undefined,
+          yearlyMSE: mseData[model.Model_ID]
+            ? mseData[model.Model_ID]["Previous Year"]
+            : undefined,
         }));
         setModels(taggedModels);
       } catch (error) {
@@ -147,30 +166,84 @@ export const ModelRankSection: React.FC = () => {
       setModelCategories({
         favTech: rankModelslikes(filterModelsByTag(models, "Technology")),
         favFinance: rankModelslikes(filterModelsByTag(models, "Finance")),
-        dailyTech: rankModelsByMSE(filterModelsByTag(models, "Technology"), "daily"),
-        dailyFinance: rankModelsByMSE(filterModelsByTag(models, "Finance"), "daily"),
-        weeklyTech: rankModelsByMSE(filterModelsByTag(models, "Technology"), "weekly"),
-        weeklyFinance: rankModelsByMSE(filterModelsByTag(models, "Finance"), "weekly"),
-        monthlyTech: rankModelsByMSE(filterModelsByTag(models, "Technology"), "monthly"),
-        monthlyFinance: rankModelsByMSE(filterModelsByTag(models, "Finance"), "monthly"),
-        yearlyTech: rankModelsByMSE(filterModelsByTag(models, "Technology"), "yearly"),
-        yearlyFinance: rankModelsByMSE(filterModelsByTag(models, "Finance"), "yearly"),
+        dailyTech: rankModelsByMSE(
+          filterModelsByTag(models, "Technology"),
+          "daily"
+        ),
+        dailyFinance: rankModelsByMSE(
+          filterModelsByTag(models, "Finance"),
+          "daily"
+        ),
+        weeklyTech: rankModelsByMSE(
+          filterModelsByTag(models, "Technology"),
+          "weekly"
+        ),
+        weeklyFinance: rankModelsByMSE(
+          filterModelsByTag(models, "Finance"),
+          "weekly"
+        ),
+        monthlyTech: rankModelsByMSE(
+          filterModelsByTag(models, "Technology"),
+          "monthly"
+        ),
+        monthlyFinance: rankModelsByMSE(
+          filterModelsByTag(models, "Finance"),
+          "monthly"
+        ),
+        yearlyTech: rankModelsByMSE(
+          filterModelsByTag(models, "Technology"),
+          "yearly"
+        ),
+        yearlyFinance: rankModelsByMSE(
+          filterModelsByTag(models, "Finance"),
+          "yearly"
+        ),
       });
     }
   }, [models]);
 
   return (
     <div className="pt-8 grid grid-cols-1 space-y-20 w-full lg:max-w-[70%] mb-10">
-      <ModelCategoryCarousel rankingTitle="Users Favorites for Technology" models={modelCategories.favTech} />
-      <ModelCategoryCarousel rankingTitle="Users Favorites for Finance" models={modelCategories.favFinance} />
-      <ModelCategoryCarousel rankingTitle="Daily Best for Technology" models={modelCategories.dailyTech} />
-      <ModelCategoryCarousel rankingTitle="Daily Best for Finance" models={modelCategories.dailyFinance} />
-      <ModelCategoryCarousel rankingTitle="Weekly Best for Technology" models={modelCategories.weeklyTech} />
-      <ModelCategoryCarousel rankingTitle="Weekly Best for Finance" models={modelCategories.weeklyFinance} />
-      <ModelCategoryCarousel rankingTitle="Monthly Best for Technology" models={modelCategories.monthlyTech} />
-      <ModelCategoryCarousel rankingTitle="Monthly Best for Finance" models={modelCategories.monthlyFinance} />
-      <ModelCategoryCarousel rankingTitle="Yearly Best for Technology" models={modelCategories.yearlyTech} />
-      <ModelCategoryCarousel rankingTitle="Yearly Best for Finance" models={modelCategories.yearlyFinance} />
+      <ModelCategoryCarousel
+        rankingTitle="Users Favorites for Technology"
+        models={modelCategories.favTech}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Users Favorites for Finance"
+        models={modelCategories.favFinance}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Daily Best for Technology"
+        models={modelCategories.dailyTech}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Daily Best for Finance"
+        models={modelCategories.dailyFinance}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Weekly Best for Technology"
+        models={modelCategories.weeklyTech}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Weekly Best for Finance"
+        models={modelCategories.weeklyFinance}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Monthly Best for Technology"
+        models={modelCategories.monthlyTech}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Monthly Best for Finance"
+        models={modelCategories.monthlyFinance}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Yearly Best for Technology"
+        models={modelCategories.yearlyTech}
+      />
+      <ModelCategoryCarousel
+        rankingTitle="Yearly Best for Finance"
+        models={modelCategories.yearlyFinance}
+      />
     </div>
   );
 };
