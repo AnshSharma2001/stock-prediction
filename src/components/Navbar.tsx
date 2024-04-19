@@ -21,17 +21,7 @@ import { CommandMenu } from "./ui/command-menu";
 import DropDownNav from "./dropdown-nav";
 import { usePathname } from "next/navigation";
 import { set } from "date-fns";
-import AddMLModal from "@/components/AddMLModal";
-// import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { PlusIcon } from "@radix-ui/react-icons";
 import {
   TooltipProvider,
@@ -58,10 +48,6 @@ export default function Navbar() {
         : "bg-background text-foreground" // Conditional class; change "text-blue-500" and "text-gray-700" as needed
     );
   };
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <nav className="flex shrink-0 h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
@@ -98,12 +84,11 @@ export default function Navbar() {
                 </Link>
               </NavigationMenuItem>
             ))}
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-              <DialogTrigger asChild>
-                <TooltipProvider>
+            <Link href='/create-model' passHref>
+              <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button size="sm" variant="secondary" onClick={openModal}>
+                      <Button size="sm" variant="secondary">
                         <PlusIcon className=" w-4 h-4 font-bold" />
                       </Button>
                     </TooltipTrigger>
@@ -112,9 +97,7 @@ export default function Navbar() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-              </DialogTrigger>
-              <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
-            </Dialog>
+            </Link>
             <DropDownNav />
           </NavigationMenuList>
         </NavigationMenu>

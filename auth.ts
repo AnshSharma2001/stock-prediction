@@ -23,12 +23,25 @@ export const {
     // },
 
     async session({ token, session }) {
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
+      console.log("session is", session)
+      // session.user.accessToken = token.accessToken;
+      // session.user.accessToken = token.access_token;
+      // if (token.sub && session.user) {
+        // session.user.id = token.sub;
+        // session.user.name = token.username;
+        // session.sessionToken = token.jwtToken;
+      // }
       return session;
     },
-    async jwt({ token }) {
+    async jwt({ token, user, account, profile }) {
+
+      //i'm still testing this
+      //access token and id is not being transferred from the auth.config.ts
+      token.name = token.name
+      token.id = profile?.id
+      token.accessToken = token.accessToken
+      console.log("token log", token)
+      console.log("user log", user)
       return token;
     },
   },
