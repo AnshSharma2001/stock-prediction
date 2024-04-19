@@ -19,10 +19,12 @@ export default {
           })
           
           if (response.ok) {
-            const user = await response.json();
-            user.name = username;
-            user.id = user.id;
-            console.log(user);
+            const data = await response.json();
+            const user = {
+              name: username, // Use the username provided in credentials
+              access_token: data.access_token
+            };
+            console.log(user)
             return user
           } 
 

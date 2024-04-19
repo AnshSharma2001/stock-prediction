@@ -80,10 +80,13 @@ const CreateModel = () => {
     // Here you would make your API request
     console.log("Form Data Prepared:", Object.fromEntries(formData));
     const SendForm = async () => {
-      console.log(session)
+      console.log(session.data?.user.accessToken)
       try {
         const response = await fetch("http://3.129.67.70/model/add", {
-          method: "POST",
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${session.data?.user.accessToken}`,
+          },
           body: formData,
         })
   
