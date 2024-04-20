@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 interface Model {
   Creator_Email: string;
@@ -37,11 +44,15 @@ const ViewModels = () => {
       for (let i = startModelId; i <= endModelId; i++) {
         try {
           // Fetch the model
-          const modelResponse = await fetch(`http://3.129.67.70/general/models/${i}`);
-          const modelData: Omit<Model, 'Tags'> = await modelResponse.json();
+          const modelResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models/${i}`
+          );
+          const modelData: Omit<Model, "Tags"> = await modelResponse.json();
 
           // Fetch the tags for the model
-          const tagsResponse = await fetch(`http://3.129.67.70/general/modeltags/${i}`);
+          const tagsResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/modeltags/${i}`
+          );
           const tagsData: Tag[] = await tagsResponse.json();
 
           // Combine the model data with its tags
@@ -63,17 +74,21 @@ const ViewModels = () => {
       {models.map((model) => (
         <div className="w-1/4" key={model.Model_ID}>
           <Card className="rounded-lg overflow-hidden shadow-lg text-white">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1560221328-12fe60f83ab8?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Model Visual"
               className="w-full h-32 object-cover"
+              width={200}
+              height={150}
             />
             <CardHeader>
               <CardTitle>{model.Model_Name}</CardTitle>
               <CardDescription>{model.Description}</CardDescription>
               <div className="flex flex-wrap gap-2 mt-2">
                 {model.Tags.map((tag) => (
-                  <Badge key={tag.TagID} variant="secondary">{tag.Name}</Badge>
+                  <Badge key={tag.TagID} variant="secondary">
+                    {tag.Name}
+                  </Badge>
                 ))}
               </div>
             </CardHeader>

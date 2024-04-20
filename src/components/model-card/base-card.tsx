@@ -36,15 +36,15 @@ export const BaseCard = ({
     }));
   };
   return (
-    <div className="p-1 cursor-pointer">
-      <Card className="shadow-none">
-        <CardContent className="relative flex aspect-video p-0 overflow-hidden">
+    <div className="p-1 cursor-pointer max-w-sm">
+      <Card className="shadow-none ">
+        <CardContent className="relative p-0">
           <Image
             className="rounded-xl"
-            fill
+            height={225}
+            width={400}
             src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="some model image"
-            objectFit="cover"
           />
         </CardContent>
       </Card>

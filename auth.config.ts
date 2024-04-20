@@ -2,7 +2,6 @@ import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 import { LoginSchema } from "./schemas";
 
-
 export default {
   providers: [
     Credentials({
@@ -12,11 +11,14 @@ export default {
         if (validatedFields.success) {
           const { username, password } = validatedFields.data;
 
-          const response = await fetch('http://3.129.67.70/auth/login', {
-            method:'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password})
-          })
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/auth/login`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password }),
+            }
+          );
 
           if (response.ok) {
             const user = await response.json();
@@ -31,8 +33,6 @@ export default {
           // const userData = await userResponse.json();
 
           // Return a user object with the access token and any other details you need
-          
-          
 
           // const user = await getUserByEmail(email);
           // if (!user || !user.password) return null;
@@ -45,8 +45,8 @@ export default {
           // if (passwordMatch) return user
         }
         return null;
-      }
-    })
+      },
+    }),
   ],
-  session: { strategy: "jwt"},
-} satisfies NextAuthConfig
+  session: { strategy: "jwt" },
+} satisfies NextAuthConfig;

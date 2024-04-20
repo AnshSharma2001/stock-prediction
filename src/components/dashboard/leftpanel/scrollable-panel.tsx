@@ -10,15 +10,15 @@ export const ScrollPanel = () => {
     //   className=" w-full md:basis-3/4 overflow-auto"
     //   style={{ maxHeight: "calc(100vh - 80px)" }}
     // >
-    <div className="mt-[62px] flex flex-col items-center w-full gap-y-8">
+    <div className="flex flex-col items-center w-full gap-y-8">
       {/* Just a broilerplate skeleton to accomodate the new design and add lazy loading when data is fetched from the backend. */}
-      <Skeleton className=" aspect-video h-[500px]  mb-4" />
-      <div className="w-full flex justify-center space-x-10 h-20">
+      {/* <Skeleton className=" aspect-video h-[500px]  mb-4" /> */}
+      {/* <div className="w-full flex justify-center space-x-10 h-20">
         <Skeleton className="  w-[150px] " />
         <Skeleton className=" w-[150px]" />
         <Skeleton className=" w-[150px]" />
         <Skeleton className=" w-[150px]" />
-      </div>
+      </div> */}
 
       <ModelRankSection />
     </div>
