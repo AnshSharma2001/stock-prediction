@@ -65,13 +65,14 @@ export async function ProfileSection() {
   };
 
   return (
-    <div className="grid gap-2">
-      {/* WARNING: DO NOT USE THIS WAY TO INITIALIZE THE FORMS THIS WAY USE ZOD INSTEAD.
-        YOU CAN GOOGLE ABOUT ZOD, IF YOU STILL CANNOT FIGURE IT OUT LET ME KNOW ~ ANSH   
-    */}
-      <h1 className="text-3xl font-bold mb-8 mt-10">Profile</h1>
-      <div className="grid gap-0.5">
-        <h2 className="text-xl font-semibold mb-8">Update Password</h2>
+    <div className="grid gap-4">
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Profile</h1>
+        <p className="text-sm text-muted-foreground">Update your display profile.</p>
+      </div>
+      <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] w-full"></div>
+      <div className="grid gap-7">
+        <h2 className="font-semibold leading-none tracking-tight">Update Password</h2>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -130,7 +131,7 @@ export async function ProfileSection() {
             />
             <FormError message={error} />
             <FormSuccess message={success} />
-            <div className="mt-6 flex flex-col items-center justify-center gap-4">
+            <div className="mt-6 flex flex-col items-center justify-center gap-2">
               <Button className="w-full" type="submit" disabled={isPending}>
                 Change Password
               </Button>

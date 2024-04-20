@@ -22,16 +22,6 @@ const paths = [
     title: "Appearance",
     id: 3,
   },
-  {
-    url: "/settings/notifications",
-    title: "Notifications",
-    id: 4,
-  },
-  {
-    url: "/settings/display",
-    title: "Display",
-    id: 5,
-  },
 ];
 
 export const Sidebar = () => {
