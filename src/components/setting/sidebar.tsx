@@ -7,30 +7,20 @@ import React from "react";
 
 const paths = [
   {
-    url: "/settings/general",
-    title: "General",
+    url: "/settings/profile",
+    title: "Profile",
     id: 1,
   },
   // Please make the folders for all these routes accordingly, the page.tsx inside (routes)/general/
   {
-    url: "/settings/integrations",
-    title: "Integrations",
+    url: "/settings/account",
+    title: "Account",
     id: 2,
   },
   {
-    url: "/settings/advanced",
-    title: "Advanced",
+    url: "/settings/appearance",
+    title: "Appearance",
     id: 3,
-  },
-  {
-    url: "/settings/support",
-    title: "Support",
-    id: 4,
-  },
-  {
-    url: "/settings/organizations",
-    title: "Organizations",
-    id: 5,
   },
 ];
 
