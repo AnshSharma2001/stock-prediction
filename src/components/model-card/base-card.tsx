@@ -17,6 +17,7 @@ interface Model {
   Subscribe_Count: number;
   UserID: number;
 }
+
 interface LikeState {
   [modelId: number]: {
     count: number;
@@ -24,33 +25,10 @@ interface LikeState {
   };
 }
 
-
-function parseJwt(token: string) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-  return JSON.parse(jsonPayload);
+interface UserDetails {
+  jwtToken: string | null;
+  userId: number | null;
 }
-
-const useUserId = () => {
-  const [userId, setUserId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession();
-      if (session?.user?.accessToken) {
-        const payload = parseJwt(session.user.accessToken);
-        setUserId(payload.sub);
-      }
-    };
-
-    fetchSession();
-  }, []);
-
-  return userId;
-};
 
 const fetchLikes = async (userId: number) => {
   try {
@@ -69,23 +47,42 @@ const fetchLikes = async (userId: number) => {
 };
 
 // Fetch user ID from JWT token
-const useJWT = () => {
-  const [JwtId, setJwtId] = useState<string | null>(null);
+const useUserDetails = () => {
+  const [details, setDetails] = useState<UserDetails>({
+    jwtToken: null,
+    userId: null
+  });
 
   useEffect(() => {
-    const fetchSession = async () => {
+    const fetchUserDetails = async () => {
       const session = await getSession();
       if (session?.user?.accessToken) {
-        setJwtId(session?.user?.accessToken)
+        const jwtToken = session.user.accessToken;
+        const url = 'https://techblacker.com/protected';
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setDetails({
+            jwtToken,
+            userId: data.user_id // Ensure your backend sends this exact key
+          });
+        } else {
+          console.error("Failed to fetch user ID:", response.statusText);
+        }
       }
     };
 
-    fetchSession();
+    fetchUserDetails();
   }, []);
 
-  return JwtId;
+  return details;
 };
-
 
 
 export const BaseCard = ({
@@ -98,8 +95,7 @@ export const BaseCard = ({
   UserID,
 }: Model) => {
   const [likes, setLikes] = useState<LikeState>({});
-  const userId = useUserId();
-  const JwtId = useJWT();
+  const { jwtToken, userId } = useUserDetails();
   
   useEffect(() => {
     if (userId) {
@@ -121,7 +117,7 @@ export const BaseCard = ({
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${JwtId}`
+          'Authorization': `Bearer ${jwtToken}`
         }
       });
 
