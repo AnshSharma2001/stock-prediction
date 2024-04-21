@@ -21,10 +21,14 @@ export default {
           );
 
           if (response.ok) {
-            const user = await response.json();
-            const accessToken = user.access_token;
-            return accessToken;
-          }
+            const data = await response.json();
+            const user = {
+              name: username, // Use the username provided in credentials
+              access_token: data.access_token
+            };
+            console.log(user)
+            return user
+          } 
 
           // Optionally, make an additional request to fetch user details using the access token
           // const userResponse = await fetch('http://3.129.67.70/auth/user', {
@@ -48,5 +52,7 @@ export default {
       },
     }),
   ],
-  session: { strategy: "jwt" },
-} satisfies NextAuthConfig;
+  session: { strategy: "jwt"},
+  secret: process.env.AUTH_SECRET,
+  trustHost: true,
+} satisfies NextAuthConfig
