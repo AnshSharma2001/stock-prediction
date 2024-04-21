@@ -14,6 +14,8 @@ export const {
       if (account && user && typeof user.access_token === 'string') {
         token.accessToken = user.access_token;  // TypeScript now knows this must be a string
       }
+      console.log("token log: ", token)
+      console.log("user log: ", user)
       return token;
     },
 
@@ -25,6 +27,7 @@ export const {
         // Handle the case where accessToken is not a string, or provide a default value
         session.user.accessToken = '';
       }
+      console.log("session is: ", session)
       return session;
     },
   },
