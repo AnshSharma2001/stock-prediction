@@ -13,6 +13,7 @@ const Dashboard = () => {
    * {"user":{"name":"Ansh Sharma","email":"vanshsethi11@gmail.com","image":null,"role":"USER","id":"clt51mgsf00009pwrhbpzaiw6"},"expires":"2024-03-29T00:45:00.695Z"}
    */
   // const session = await auth(); make the parent function async if this is used
+  console.log(process.env);
 
   return (
     <div className="px-8 flex flex-col items-center mt-12 mb-5">
