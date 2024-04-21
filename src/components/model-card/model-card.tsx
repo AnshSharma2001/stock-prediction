@@ -5,7 +5,8 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import { getSession } from 'next-auth/react';
 
 interface Model {
   Creator_Email: string;
@@ -20,6 +21,76 @@ interface Model {
   Subscribe_Count: number;
 }
 
+
+interface LikeState {
+  [modelId: number]: {
+    count: number;
+    liked: boolean;
+  };
+}
+
+function parseJwt(token: string) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+  return JSON.parse(jsonPayload);
+}
+
+const useUserId = () => {
+  const [userId, setUserId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      if (session?.user?.accessToken) {
+        const payload = parseJwt(session.user.accessToken);
+        setUserId(payload.sub);
+      }
+    };
+
+    fetchSession();
+  }, []);
+
+  return userId;
+};
+
+const fetchLikes = async (userId: number) => {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/model_likes/${userId}`;
+    const response = await fetch(url);
+
+    const likesData = await response.json();
+    // Check if the response includes a message indicating no likes found
+    if (likesData.message === "No models found or invalid user ID") {
+      return []; // No likes, return empty array to handle gracefully
+    }
+    return likesData; // Assuming likesData is the expected array
+  } catch (error) {
+    return []; // Return an empty array to prevent further errors
+  }
+};
+
+// Fetch user ID from JWT token
+const useJWT = () => {
+  const [JwtId, setJwtId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      if (session?.user?.accessToken) {
+        setJwtId(session?.user?.accessToken)
+      }
+    };
+
+    fetchSession();
+  }, []);
+
+  return JwtId;
+};
+
+
 export const ModelCard = ({
   Creator_Email,
   Creator_ID,
@@ -32,14 +103,52 @@ export const ModelCard = ({
   Model_Name, 
   Subscribe_Count, 
 }: Model) => {
-  const [likes, setLikes] = useState<{ [modelId: number]: boolean }>({});
-  const toggleLike = (modelId: number) => {
-    // Toggle the like state for the specific model
-    // If the model ID does not exist in the state, it defaults to false and then gets toggled to true
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [modelId]: !prevLikes[modelId],
-    }));
+  const [likes, setLikes] = useState<LikeState>({});
+  const userId = useUserId();
+  const JwtId = useJWT();
+  useEffect(() => {
+    if (userId) {
+      fetchLikes(userId).then(data => {
+        const formattedLikes = data.reduce((acc: LikeState, item: any) => {
+          acc[item.Model_ID] = { count: Like_Count, liked: true }; // Assume the count from props is the initial count
+          return acc;
+        }, {});
+        setLikes(formattedLikes);
+      }).catch(error => console.error("Failed to fetch likes:", error));
+    }
+  }, [userId, Like_Count]);
+
+  const toggleLike = async (modelId: number) => {
+    const currentLike = likes[modelId] || { count: Like_Count, liked: false };
+    const newLikedStatus = !currentLike.liked;
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/sub/like/${modelId}`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${JwtId}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to like');
+      }
+
+      const responseData = await response.json();
+      if (responseData.message) {
+        // Update the like count based on successful response
+        setLikes(prevLikes => ({
+          ...prevLikes,
+          [modelId]: {
+            count: newLikedStatus ? currentLike.count + 1 : Math.max(currentLike.count - 1, 0),
+            liked: newLikedStatus
+          },
+        }));
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+      alert("Failed to toggle like. Please try again.");
+    }
   };
   return (
     <div className="p-1 cursor-pointer max-w-sm">
@@ -62,19 +171,16 @@ export const ModelCard = ({
           </p>
         </div>
         <Button
-          onClick={() => toggleLike(Model_ID)}
-          variant="like"
-          size="sm"
-          className="mt-1 gap-x-1 items-center justify-center"
-        >
-          <Heart
-            className={cn(
-              "w-4 h-4 font-thin ",
-              likes[Model_ID] && "fill-[#cd486b] text-[#cd486b]"
-            )}
-          />
-          <p className="text-xs font-xs ">{Like_Count}</p>
-        </Button>
+        onClick={() => toggleLike(Model_ID)}
+        variant="like"
+        size="sm"
+        className="mt-1 gap-x-1 items-center justify-center"
+      >
+        <Heart
+          className={likes[Model_ID]?.liked ? "fill-[#cd486b] text-[#cd486b]" : "fill-none text-current"}
+        />
+        <p className="text-xs">{likes[Model_ID]?.count ?? Like_Count}</p>
+      </Button>
       </div>
     </div>
   );
