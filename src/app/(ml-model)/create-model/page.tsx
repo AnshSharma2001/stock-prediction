@@ -1,9 +1,9 @@
 "use client";
 import React, { SetStateAction, useEffect, useState } from "react";
-import { number, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"; 
-import { getSession, useSession } from "next-auth/react"
+import { getSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -46,9 +46,27 @@ const formSchema = z.object({
   modelFile: z.instanceof(File).optional(),
 });
 
+const useJWT = () => {
+  const [JwtId, setJwtId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      console.log(session?.user.accessToken)
+      if (session?.user.accessToken) {
+        setJwtId(session.user.accessToken)
+      }
+    };
+
+    fetchSession();
+  }, []);
+
+  return JwtId;
+};
+
 const CreateModel = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
-  const session = useSession();
+  const JwtId = useJWT(); // Move the useJWT hook here.
   
   const tags = [
     { id: 1, label: "Finance" },
@@ -80,12 +98,12 @@ const CreateModel = () => {
     // Here you would make your API request
     console.log("Form Data Prepared:", Object.fromEntries(formData));
     const SendForm = async () => {
-      console.log(session.data?.user.accessToken)
       try {
-        const response = await fetch("http://3.129.67.70/model/add", {
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/model/add`;
+        const response = await fetch(url, {
           method: 'POST',
           headers: {
-              'Authorization': `Bearer ${session.data?.user.accessToken}`,
+              'Authorization': `Bearer ${JwtId}`,
           },
           body: formData,
         })
