@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { CommandMenu } from "./ui/command-menu";
 import DropDownNav from "./dropdown-nav";
 import { usePathname } from "next/navigation";
-import AddMLModal from "@/components/AddMLModal";
+
 // import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { PlusIcon } from "@radix-ui/react-icons";
@@ -49,10 +49,6 @@ export default function Navbar() {
         : "bg-background text-foreground"
     );
   };
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div className="p-4 flex items-center justify-between relative">
@@ -92,23 +88,20 @@ export default function Navbar() {
       </nav>
 
       <aside className=" flex gap-2 items-center">
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogTrigger asChild>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="sm" variant="secondary" onClick={openModal}>
-                    <PlusIcon className=" w-4 h-4 font-bold" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Create a model</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </DialogTrigger>
-          <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
-        </Dialog>
+            <Link href='/create-model' passHref>
+              <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button size="sm" variant="secondary">
+                        <PlusIcon className=" w-4 h-4 font-bold" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Create a model</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+            </Link>
         <DropDownNav />
       </aside>
     </div>
