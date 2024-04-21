@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import FixedRightBar from "@/components/dashboard/fixed-right-bar/FixedRightBar";
 import { auth, signOut } from "../../../../auth";
 import { ScrollPanel } from "@/components/dashboard/leftpanel/scrollable-panel";
+import { TopModels } from "@/components/dashboard/top-models";
 
 const Dashboard = () => {
   /**
@@ -14,7 +15,8 @@ const Dashboard = () => {
   // const session = await auth(); make the parent function async if this is used
 
   return (
-    <div className="px-8">
+    <div className="px-8 flex flex-col items-center mt-12 mb-5">
+      <TopModels />
       <ScrollPanel />
       {/* <FixedRightBar /> */}
     </div>
