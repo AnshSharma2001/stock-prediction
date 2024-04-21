@@ -4,6 +4,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"; 
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+
 
 import { Button } from "@/components/ui/button"
 import {
@@ -68,6 +71,7 @@ const CreateModel = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
   const JwtId = useJWT(); // Move the useJWT hook here.
   
+  const router = useRouter(); 
   const tags = [
     { id: 1, label: "Finance" },
     { id: 2, label: "Technology" },
@@ -111,6 +115,7 @@ const CreateModel = () => {
         if (response.ok) {
           const jsonResponse = await response.json();
           console.log("Success:", jsonResponse);
+          router.replace("/view-models"); 
           return jsonResponse;
         } else {
           throw new Error("Failed to submit model");
