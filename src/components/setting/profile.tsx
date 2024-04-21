@@ -4,7 +4,7 @@ import React, { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { change_password } from "../../../actions/change_password";
 import { ChangePasswordSchema } from "../../../schemas/index";
@@ -24,11 +24,10 @@ import {
 
 import { Input } from "@/components/ui/input";
 
-
-export async function ProfileSection() {
+export function ProfileSection() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const router = useRouter(); 
+  const router = useRouter();
   const { theme } = useTheme();
 
   const form = useForm<z.infer<typeof ChangePasswordSchema>>({
@@ -41,6 +40,8 @@ export async function ProfileSection() {
   });
 
   const [isPending, startTransition] = useTransition();
+  console.log(isPending);
+  console.log(startTransition);
 
   // Define a submit handler
   const onSubmit = (values: z.infer<typeof ChangePasswordSchema>) => {
@@ -68,11 +69,19 @@ export async function ProfileSection() {
     <div className="grid gap-4">
       <div>
         <h1 className="text-2xl font-bold text-foreground">Profile</h1>
-        <p className="text-sm text-muted-foreground">Update your display profile.</p>
+        <p className="text-sm text-muted-foreground">
+          Update your display profile.
+        </p>
       </div>
-      <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] w-full"></div>
+      <div
+        data-orientation="horizontal"
+        role="none"
+        className="shrink-0 bg-border h-[1px] w-full"
+      ></div>
       <div className="grid gap-7">
-        <h2 className="font-semibold leading-none tracking-tight">Update Password</h2>
+        <h2 className="font-semibold leading-none tracking-tight">
+          Update Password
+        </h2>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -85,11 +94,7 @@ export async function ProfileSection() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isPending}
-                      type="username"
-                      {...field}
-                    />
+                    <Input disabled={isPending} type="username" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,6 +147,5 @@ export async function ProfileSection() {
     </div>
   );
 }
-
 
 export default ProfileSection;
