@@ -34,6 +34,24 @@ const DropDownNav = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <Link href="/dashboard">
+            <DropdownMenuItem className="block md:hidden">
+              Dashboard
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/about">
+            <DropdownMenuItem className="block md:hidden">
+              About
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/view-models">
+            <DropdownMenuItem className="block md:hidden">
+              Models
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator className="block md:hidden" />
+        <DropdownMenuGroup>
           <Link href="/profile">
             <DropdownMenuItem>Profile</DropdownMenuItem>
           </Link>

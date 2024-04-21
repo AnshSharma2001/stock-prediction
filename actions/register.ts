@@ -4,36 +4,38 @@ import * as z from "zod";
 import { RegisterSchema } from "../schemas";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
-    const validatedFields = RegisterSchema.safeParse(values);
+  const validatedFields = RegisterSchema.safeParse(values);
 
-    if (!validatedFields.success) {
-        return {error: "Invalid fields!"};
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" };
+  }
+
+  const { email, password, username } = validatedFields.data;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        username,
+      }),
     }
+  );
 
-    const { email, password, username } = validatedFields.data;
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
 
-    const response = await fetch('http://3.129.67.70/auth/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            email,
-            password,
-            username,
-        }),
-    });
+  const data = await response.json();
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
-    const data = await response.json();
-
-    if(data.message) {
-        return { success: data.message};
-    }
-    else{
-        return { error: `Error: Registration Failed`};
-    }
-}
+  if (data.message) {
+    return { success: data.message };
+  } else {
+    return { error: `Error: Registration Failed` };
+  }
+};
