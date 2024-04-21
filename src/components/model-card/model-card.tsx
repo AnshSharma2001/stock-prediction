@@ -106,6 +106,7 @@ export const ModelCard = ({
   const [likes, setLikes] = useState<LikeState>({});
   const userId = useUserId();
   const JwtId = useJWT();
+
   useEffect(() => {
     if (userId) {
       fetchLikes(userId).then(data => {

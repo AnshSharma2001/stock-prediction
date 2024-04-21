@@ -20,9 +20,8 @@ import { Button } from "@/components/ui/button";
 import { CommandMenu } from "./ui/command-menu";
 import DropDownNav from "./dropdown-nav";
 import { usePathname } from "next/navigation";
-import AddMLModal from "@/components/AddMLModal";
-// import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { set } from "date-fns";
+
 import { PlusIcon } from "@radix-ui/react-icons";
 import {
   TooltipProvider,
@@ -38,25 +37,21 @@ export default function Navbar() {
   const menus = [
     { title: "Dashboard", path: "/dashboard", id: 1 },
     { title: "About", path: "/about", id: 2 },
-    { title: "Models", path: "/view-models", id: 3 },
   ];
 
+  // Function to determine the className based on whether the item is selected
   const getItemClassName = (menuPath: string) => {
     return cn(
-      navigationMenuTriggerStyle(),
+      navigationMenuTriggerStyle(), // Apply default styles
       pathname === menuPath
         ? "bg-accent text-accent-foreground"
-        : "bg-background text-foreground"
+        : "bg-background text-foreground" // Conditional class; change "text-blue-500" and "text-gray-700" as needed
     );
   };
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="p-4 flex items-center justify-between relative">
-      <aside className="flex items-center gap-2">
+    <nav className="flex shrink-0 h-20 justify-between items-center px-4 top-0 z-10 backdrop-filter backdrop-blur-md bg-opacity-30">
+      <div className="ms-4">
         <Link href="/dashboard">
           <Image
             src={
@@ -67,50 +62,47 @@ export default function Navbar() {
                 : LogoSystem
             }
             alt="Logo"
-            width={40}
-            height={40}
+            width={50}
+            height={50}
           />
         </Link>
-        <span className="text-xl font-bold">Trademinds</span>
-      </aside>
-
-      <nav
-        className="hidden md:block absolute left-[50%] top-[50%] 
-      transform translate-x-[-50%] translate-y-[-50%]"
-      >
-        <ul className="flex items-center justify-center gap-8">
-          {menus.map((menu) => (
-            <Link href={menu.path} key={menu.id}>
-              <div
-                className={getItemClassName(menu.path)} // Update selected state
-              >
-                {menu.title}
-              </div>
+      </div>
+      <div className="relative lg:block lg:w-1/3">
+        <CommandMenu />
+      </div>
+      <div>
+        <NavigationMenu>
+          <NavigationMenuList className="flex gap-2 pr-10">
+            {menus.map((menu) => (
+              <NavigationMenuItem key={menu.id}>
+                <Link href={menu.path} legacyBehavior passHref>
+                  <NavigationMenuLink
+                    className={getItemClassName(menu.path)} // Update selected state
+                  >
+                    {menu.title}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+            <Link href='/create-model' passHref>
+              <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button size="sm" variant="secondary">
+                        <PlusIcon className=" w-4 h-4 font-bold" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Create a model</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
             </Link>
-          ))}
-        </ul>
-      </nav>
-
-      <aside className=" flex gap-2 items-center">
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogTrigger asChild>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button size="sm" variant="secondary" onClick={openModal}>
-                    <PlusIcon className=" w-4 h-4 font-bold" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Create a model</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </DialogTrigger>
-          <AddMLModal isOpen={isModalOpen} onClose={closeModal} />
-        </Dialog>
-        <DropDownNav />
-      </aside>
-    </div>
+            <DropDownNav />
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
+    </nav>
   );
 }
+
