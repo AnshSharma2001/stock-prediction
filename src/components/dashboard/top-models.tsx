@@ -11,6 +11,8 @@ import {
 } from "recharts";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 
 interface MSEData {
   [key: string]: {
@@ -98,58 +100,67 @@ export const TopModels = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-  if (!data) return <p>No data available.</p>;
 
   return (
     <div className="w-full px-10 h-[300px] md:h-[500px] pb-10 pt-30 rounded-xl lg:max-w-[70%]">
       <h1 className="text-2xl font-bold mb-10">Top Performing Models</h1>
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          data={data[selectedTimeframe as keyof DataState]}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <XAxis dataKey="name" dy={10} />
-          <YAxis />
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            type="monotone"
-            dataKey="mse"
-            stroke="#0096FF"
-            fill="url(#colorGradient)"
-          />
-          <defs>
-            <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0096FF" stopOpacity={1} />
-              <stop offset="100%" stopColor="transparent" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-        </AreaChart>
-      </ResponsiveContainer>
 
-      <div className="flex justify-end space-x-3 mt-10 mb-5 ">
-        {[
-          { timeframe: "day", label: "1D" },
-          { timeframe: "week", label: "1W" },
-          { timeframe: "month", label: "1M" },
-          { timeframe: "year", label: "1Y" },
-        ].map(({ timeframe, label }) => (
-          <Button
-            size="sm"
-            variant={selectedTimeframe === timeframe ? "default" : "secondary"}
-            key={timeframe}
-            onClick={() => setSelectedTimeframe(timeframe)}
-          >
-            {label}
-          </Button>
-        ))}
-      </div>
+      {loading || !data ? (
+        <div className="w-full h-full">
+          <Skeleton className="w-full h-full" />
+        </div>
+      ) : (
+        <>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={data[selectedTimeframe as keyof DataState]}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <XAxis dataKey="name" dy={10} />
+              <YAxis />
+              <Tooltip content={<CustomTooltip />} />
+              <Area
+                type="monotone"
+                dataKey="mse"
+                stroke="#0096FF"
+                fill="url(#colorGradient)"
+              />
+              <defs>
+                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#0096FF" stopOpacity={1} />
+                  <stop offset="100%" stopColor="transparent" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+            </AreaChart>
+          </ResponsiveContainer>
+          <div className="flex justify-end space-x-3 mt-10 mb-5 ">
+            <Tabs className="mb-6" defaultValue="1D">
+              <TabsList>
+                {[
+                  { timeframe: "day", label: "1D" },
+                  { timeframe: "week", label: "1W" },
+                  { timeframe: "month", label: "1M" },
+                  { timeframe: "year", label: "1Y" },
+                ].map(({ timeframe, label }) => (
+                  <TabsTrigger
+                    value={label}
+                    key={timeframe}
+                    onClick={() => setSelectedTimeframe(timeframe)}
+                  >
+                    {label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        </>
+      )}
     </div>
   );
 };
