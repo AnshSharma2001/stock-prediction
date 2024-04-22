@@ -114,7 +114,8 @@ export const ModelCard = ({
     }
   }, [userId, Like_Count]);
 
-  const toggleLike = async (modelId: number) => {
+  const toggleLike = async (event: React.MouseEvent<HTMLButtonElement>, modelId: number) => {
+    event.stopPropagation(); // Stops the event from bubbling up to higher-level components
     const currentLike = likes[modelId] || { count: Like_Count, liked: false };
     const newLikedStatus = !currentLike.liked;
     const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/sub/like/${modelId}`;
@@ -147,14 +148,14 @@ export const ModelCard = ({
     }
   };
   return (
-    <div className="p-1 cursor-pointer max-w-sm">
+    <div className="p-1 cursor-pointer max-w-sm" onClick={() => window.location.href = `/view-models/${Model_ID}`}>
       <Card className="shadow-none ">
         <CardContent className="relative p-0">
           <Image
             className="rounded-xl"
             height={225}
             width={400}
-            src=  "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src= "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="some model image"
           />
         </CardContent>
@@ -167,7 +168,7 @@ export const ModelCard = ({
           </p>
         </div>
         <Button
-        onClick={() => toggleLike(Model_ID)}
+        onClick={(e) => toggleLike(e,Model_ID)}
         variant="like"
         size="sm"
         className="mt-1 gap-x-1 items-center justify-center"
