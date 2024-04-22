@@ -64,8 +64,8 @@ const sortData = (data: MSEData, key: keyof MSEData[string]): ModelData[] => {
       mse: values[key],
       ...values,
     }))
-    .sort((a, b) => b.mse - a.mse)
-    .slice(0, 10); // Get top 10 models
+    .sort((a, b) => a.mse - b.mse) // Sort in ascending order
+    .slice(0, 5); // Get top 10 models
 };
 
 export const TopModels = () => {
