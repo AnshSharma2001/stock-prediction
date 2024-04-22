@@ -15,32 +15,13 @@ import { Heart, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BaseCard } from "@/components/model-card/base-card";
-import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
-interface Model {
-  Description: string;
-  Like_Count: number;
-  Model_File_Path: string;
-  Model_ID: number;
-  Name: string;
-  Subscribe_Count: number;
-  UserID: number;
-  Model_Name: string;
-  dailyMSE?: number;
-  monthlyMSE?: number;
-  yearlyMSE?: number;
-  Tags?: string[];
-}
-
-interface ModelCategoryCarouselProps {
-  rankingTitle: string;
-  models: Model[];
-}
-
-export const ModelCategoryCarousel = ({
+export const ModelCategoryCarouselLoading = ({
   rankingTitle,
-  models,
-}: ModelCategoryCarouselProps) => {
+}: {
+  rankingTitle: string;
+}) => {
   // TODO: UPDATE THE LIKES IN THE BACKEND AND REFLECT THAT ON EVERY MODEL BY DEFAULT
 
   return (
@@ -55,22 +36,15 @@ export const ModelCategoryCarousel = ({
           className="w-full max-w-sm md:max-w-full "
         >
           <CarouselContent>
-            {models.map((model) => (
-              <CarouselItem
-                key={model.Model_ID}
-                className=" basis-full md:basis-1/3"
-              >
-                <Link href={`/view-models/${model.Model_ID}`}>
-                  <BaseCard
-                    Description={model.Description}
-                    Like_Count={model.Like_Count}
-                    Model_File_Path={model.Model_File_Path}
-                    Model_ID={model.Model_ID}
-                    Name={model.Name}
-                    Subscribe_Count={model.Subscribe_Count}
-                    UserID={model.UserID}
-                  />
-                </Link>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem key={index} className=" basis-full md:basis-1/3">
+                <div className="p-1 cursor-pointer max-w-sm">
+                  <Card className="shadow-none aspect-video ">
+                    {/* <CardContent className="p-0"> */}
+                    <Skeleton className="w-full h-full" />
+                    {/* </CardContent> */}
+                  </Card>
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>

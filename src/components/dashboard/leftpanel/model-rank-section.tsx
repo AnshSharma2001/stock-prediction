@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { ModelCategoryCarousel } from "./model-category-carousel";
+import { ModelCategoryCarouselLoading } from "./model-category-carousel-loading";
 
 interface Model {
   Description: string;
@@ -105,6 +106,7 @@ const rankModelslikes = (models: Model[]): Model[] => {
 
 export const ModelRankSection: React.FC = () => {
   const [models, setModels] = useState<Model[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [modelCategories, setModelCategories] = useState<ModelCategory>({
     favTech: [],
     favFinance: [],
@@ -158,6 +160,7 @@ export const ModelRankSection: React.FC = () => {
       fetchInitialData();
       fetchedOnce.current = true;
     }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -205,46 +208,63 @@ export const ModelRankSection: React.FC = () => {
   return (
     <div className="pt-8 flex flex-col space-y-20 md:space-y-30 w-full lg:max-w-[70%] mb-10 mx-0">
       {/* <div className="pt-8 grid grid-cols-1 space-y-20 md:space-y-0 gap-10 w-full lg:max-w-[70%] mb-10 mx-auto"> */}
-      <ModelCategoryCarousel
-        rankingTitle="Users Favorites for Technology"
-        models={modelCategories.favTech}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Users Favorites for Finance"
-        models={modelCategories.favFinance}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Daily Best for Technology"
-        models={modelCategories.dailyTech}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Daily Best for Finance"
-        models={modelCategories.dailyFinance}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Weekly Best for Technology"
-        models={modelCategories.weeklyTech}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Weekly Best for Finance"
-        models={modelCategories.weeklyFinance}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Monthly Best for Technology"
-        models={modelCategories.monthlyTech}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Monthly Best for Finance"
-        models={modelCategories.monthlyFinance}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Yearly Best for Technology"
-        models={modelCategories.yearlyTech}
-      />
-      <ModelCategoryCarousel
-        rankingTitle="Yearly Best for Finance"
-        models={modelCategories.yearlyFinance}
-      />
+      {isLoading ? (
+        <>
+          <ModelCategoryCarouselLoading rankingTitle="Users Favorites for Technology" />
+          <ModelCategoryCarouselLoading rankingTitle="Users Favorites for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Daily Best for Technology" />
+          <ModelCategoryCarouselLoading rankingTitle="Daily Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Weekly Best for Technology" />
+          <ModelCategoryCarouselLoading rankingTitle="Weekly Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Monthly Best for Technology" />
+          <ModelCategoryCarouselLoading rankingTitle="Monthly Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Yearly Best for Technology" />
+          <ModelCategoryCarouselLoading rankingTitle="Yearly Best for Finance" />
+        </>
+      ) : (
+        <>
+          <ModelCategoryCarousel
+            rankingTitle="Users Favorites for Technology"
+            models={modelCategories.favTech}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Users Favorites for Finance"
+            models={modelCategories.favFinance}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Daily Best for Technology"
+            models={modelCategories.dailyTech}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Daily Best for Finance"
+            models={modelCategories.dailyFinance}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Weekly Best for Technology"
+            models={modelCategories.weeklyTech}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Weekly Best for Finance"
+            models={modelCategories.weeklyFinance}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Monthly Best for Technology"
+            models={modelCategories.monthlyTech}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Monthly Best for Finance"
+            models={modelCategories.monthlyFinance}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Yearly Best for Technology"
+            models={modelCategories.yearlyTech}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Yearly Best for Finance"
+            models={modelCategories.yearlyFinance}
+          />
+        </>
+      )}
     </div>
   );
 };
