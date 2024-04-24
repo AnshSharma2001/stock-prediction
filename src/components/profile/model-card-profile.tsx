@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -17,44 +17,6 @@ interface Model {
   imgURL: string;
 }
 
-interface TruncateText {
-  text: string;
-  maxLines: number;
-  maxChars: number;
-}
-
-const truncateText = ({ text, maxLines, maxChars }: TruncateText) => {
-  const divRef = useRef<HTMLDivElement>(null);
-  const spanRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    if (!text) {
-      return "";
-    }
-
-    if (!divRef.current || !spanRef.current) {
-      return;
-    }
-
-    const div = divRef.current;
-    const span = spanRef.current;
-
-    div.style.display = "inline-block";
-    div.style.maxHeight = `${maxLines * 1.2}em`; // Assuming 1.2em line height for the text
-
-    span.textContent = text;
-
-    if (span.offsetHeight > div.offsetHeight || text.length > maxChars) {
-      while (span.offsetHeight > div.offsetHeight || text.length > maxChars) {
-        text = text.slice(0, -1);
-        span.textContent = text + "...";
-      }
-    }
-  }, [text, maxLines, maxChars]);
-
-  return text;
-};
-
 export const ModelCardProfile = ({
   Creator_Email,
   Creator_ID,
@@ -70,12 +32,12 @@ export const ModelCardProfile = ({
 }: Model) => {
   const maxLines = 3; // Maximum number of lines to display
   const maxChars = 100; // Maximum number of characters to display
+  const maxModelNameChars = 16; // Maximum number of characters to display for the model name
   const divRef = useRef<HTMLDivElement>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
-  var text = Description
-  
+  const [truncatedText, setTruncatedText] = useState<string>('');
 
-  const truncateText = () => {
+  useEffect(() => {
     if (!divRef.current || !spanRef.current) {
       return;
     }
@@ -86,22 +48,17 @@ export const ModelCardProfile = ({
     div.style.display = "inline-block";
     div.style.maxHeight = `${maxLines * 1.2}em`; // Assuming 1.2em line height for the text
 
-    span.textContent = text;
+    span.textContent = Description;
 
-    if (span.offsetHeight > div.offsetHeight || text.length > maxChars) {
-      while (span.offsetHeight > div.offsetHeight || text.length > maxChars) {
-        text = text.slice(0, -1);
-        span.textContent = text + "...";
-      }
+    if (span.offsetHeight > div.offsetHeight || Description.length > maxChars) {
+      const truncated = Description.slice(0, maxChars) + '...';
+      setTruncatedText(truncated);
+    } else {
+      setTruncatedText(Description);
     }
+  }, [Description, maxChars]);
 
-    return text;
-  };
-
-  useEffect(() => {
-    const truncatedText = truncateText();
-    // console.log(truncatedText);
-  }, []);
+  const truncatedModelName = Model_Name.length > maxModelNameChars ? Model_Name.slice(0, maxModelNameChars) + '...' : Model_Name;
 
   return (
     <Card className="group hover:bg-secondary rounded-lg shadow-lg  transition-colors flex flex-col items-center justify-center pt-4">
@@ -120,9 +77,9 @@ export const ModelCardProfile = ({
           />
           <div className="text-center space-y-1">
             <h4 className="text-lg font-semibold group-hover:underline">
-              {Model_Name}
+              {truncatedModelName}
             </h4>
-            <p className=" text-sm text-muted-foreground">{Description?Description:""}</p>
+            <p className=" text-sm text-muted-foreground">{Description}</p>
           </div>
         </div>
       </CardContent>
