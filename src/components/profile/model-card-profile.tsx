@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardFooter } from "../ui/card";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import {
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+} from "../ui/tooltip";
 
 interface Model {
   Creator_Email: string;
@@ -76,8 +82,13 @@ export const ModelCardProfile = ({
             width={80}
           />
           <div className="text-center space-y-1">
-            <h4 className="text-lg font-semibold group-hover:underline">
-              {truncatedModelName}
+            <h4 className="text-lg font-semibold group-hover:underline cursor-auto">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>{truncatedModelName}</TooltipTrigger>
+                  <TooltipContent>{Model_Name}</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </h4>
             <p className=" text-sm text-muted-foreground">{Description}</p>
           </div>
