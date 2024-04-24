@@ -12,20 +12,17 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   const { email, password, username } = validatedFields.data;
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/auth/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        username,
-      }),
-    }
-  );
+  const response = await fetch(`https://techblacker.com/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      password,
+      username,
+    }),
+  });
 
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);

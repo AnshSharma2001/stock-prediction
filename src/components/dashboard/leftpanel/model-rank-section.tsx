@@ -54,6 +54,7 @@ const fetchModelTags = async (): Promise<Tag[]> => {
 
 const fetchModels = async (): Promise<Model[]> => {
   const mseUrl = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models`;
+  console.log(mseUrl);
   try {
     const response = await fetch(mseUrl);
     if (!response.ok) {

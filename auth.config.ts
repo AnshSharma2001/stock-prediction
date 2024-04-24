@@ -12,23 +12,21 @@ export default {
         if (validatedFields.success) {
           const { username, password } = validatedFields.data;
 
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/auth/login`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password }),
-            }
-          );
+          const response = await fetch(`https://techblacker.com/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
 
           if (response.ok) {
             const data = await response.json();
             const user = {
               name: username, // Use the username provided in credentials
-              access_token: data.access_token
+              access_token: data.access_token,
             };
-            return user
-          } 
+            console.log(user);
+            return user;
+          }
 
           // Optionally, make an additional request to fetch user details using the access token
           // const userResponse = await fetch('http://3.129.67.70/auth/user', {
@@ -52,7 +50,7 @@ export default {
       },
     }),
   ],
-  session: { strategy: "jwt"},
+  session: { strategy: "jwt" },
   secret: process.env.AUTH_SECRET,
   trustHost: true,
-} satisfies NextAuthConfig
+} satisfies NextAuthConfig;

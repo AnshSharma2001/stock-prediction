@@ -1,11 +1,8 @@
 import React from 'react'
+import { ProfileSection } from "@/components/profile/profile-section.tsx";
 
 const ProfilePage = () => {
-    return (
-        <div>
-            Profile Page
-        </div>
-    )
+    return <ProfileSection />;
 }
 
 export default ProfilePage
