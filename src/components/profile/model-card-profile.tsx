@@ -38,7 +38,7 @@ export const ModelCardProfile = ({
             alt="Model Thumbnail"
             className="rounded-full"
             height={80}
-            src={imgURL}
+            src={imgURL || "/no-image-svgrepo-com.svg"}
             style={{
               aspectRatio: "80/80",
               objectFit: "cover",
@@ -49,7 +49,7 @@ export const ModelCardProfile = ({
             <h4 className="text-lg font-semibold group-hover:underline">
               {Model_Name}
             </h4>
-            <p className=" text-sm text-muted-foreground">{Description}</p>
+            <p className=" text-sm text-muted-foreground">{Description?Description:""}</p>
           </div>
         </div>
       </CardContent>

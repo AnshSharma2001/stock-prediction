@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ModelCard } from "../model-card/model-card";
+import { ModelCardProfile } from "./model-card-profile";
 import { getSession } from "next-auth/react";
 
 interface Model {
@@ -60,7 +60,7 @@ export const LikedModels = () => {
           <h2 className="text-2xl font-semibold">Liked Models</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
             {models.map((model) => (
-              <ModelCard
+              <ModelCardProfile
                 key={model.Model_ID}
                 Creator_Email={model.Creator_Email}
                 Creator_ID={model.Creator_ID}
