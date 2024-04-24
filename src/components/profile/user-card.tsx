@@ -20,8 +20,8 @@ export const UserCard = ({
   email,
   username,
   userId,
-  Profile_Picture_Path,
   isLoading,
+  Profile_Picture_Path,
 }: UserCardProps) => {
   const router = useRouter();
 

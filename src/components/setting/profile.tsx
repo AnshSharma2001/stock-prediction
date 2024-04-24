@@ -109,7 +109,7 @@ export function ProfileSection() {
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      type="old_password"
+                      type="password"
                       {...field}
                     />
                   </FormControl>
@@ -126,7 +126,7 @@ export function ProfileSection() {
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      type="new_password"
+                      type="password"
                       {...field}
                     />
                   </FormControl>

@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
 import { UserCard } from "./user-card";
 import { UserModels } from "./user-models";
+import { LikedModels } from "./liked-models";
 import { Followers } from "./followers";
 import { Card } from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
 
 interface ProfileData {
   Email: string;
@@ -15,24 +14,6 @@ interface ProfileData {
   Profile_Picture_Path?: string;
   User_ID: number;
 }
-
-const useJWT = () => {
-  const [jwtToken, setJwtToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession();
-      // console.log(session?.user.accessToken);
-      if (session?.user.accessToken) {
-        setJwtToken(session.user.accessToken);
-      }
-    };
-
-    fetchSession();
-  }, []);
-
-  return jwtToken;
-};
 
 export function ProfileSection() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
@@ -84,7 +65,7 @@ export function ProfileSection() {
           <Card className=" rounded-lg shadow-lg p-6 hover:bg-secondary ">
             <h2 className="text-2xl font-semibold mb-4">Bio</h2>
             <p className="">
-              Jared is a passionate AI engineer who loves building cutting-edge
+              {profileData?.Name} is a passionate AI engineer who loves building cutting-edge
               machine learning models. He has a deep fascination with the
               intersection of technology and creativity, and is always exploring
               new ways to push the boundaries of whats possible. In his free
@@ -94,6 +75,7 @@ export function ProfileSection() {
             </p>
           </Card>
           <UserModels />
+          <LikedModels />
           <Followers />
         </div>
       </div>
