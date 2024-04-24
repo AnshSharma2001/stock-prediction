@@ -5,7 +5,7 @@ import BackgroundImage from "/public/landing_page_img.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { login } from "../../../../actions/login";
 import { startTransition } from "react";
@@ -13,7 +13,7 @@ import { LoginSchema } from "../../../../schemas/index";
 import { FormSuccess } from "@/components/form-success";
 import { FormError } from "@/components/form-error";
 
-import Image from 'next/image';
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 export default function LoginForm() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const router = useRouter(); 
+  const router = useRouter();
   const { theme } = useTheme();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -69,7 +69,7 @@ export default function LoginForm() {
     <div>
       <div className="flex h-screen">
         <div
-          className="flex-1 bg-cover"
+          className="hidden md:block flex-1 bg-cover"
           style={{ backgroundImage: `url(${BackgroundImage.src})` }}
         ></div>
         <div className="flex-1 flex flex-col justify-center items-center">
@@ -90,7 +90,10 @@ export default function LoginForm() {
             Discover the Power of ML Stock Trading
           </h2>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-[300px]">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-5 w-[300px]"
+            >
               <FormField
                 control={form.control}
                 name="username"
@@ -98,11 +101,7 @@ export default function LoginForm() {
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={isPending}
-                        type="username"
-                        {...field}
-                      />
+                      <Input disabled={isPending} type="username" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,11 +114,7 @@ export default function LoginForm() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        disabled={isPending}
-                        type="password"
-                        {...field}
-                      />
+                      <Input disabled={isPending} type="password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -128,16 +123,23 @@ export default function LoginForm() {
               <FormError message={error} />
               <FormSuccess message={success} />
               <div className="mt-6 flex flex-col items-center justify-center gap-4">
-                <Button className="w-full" type="submit" disabled={isPending}>Log In</Button>
+                <Button className="w-full" type="submit" disabled={isPending}>
+                  Log In
+                </Button>
               </div>
             </form>
-              <div className="w-[300px] mt-6 flex flex-col items-center justify-center gap-4">
-                <Button variant="secondary" className="w-full" onClick={() => router.push("/register")}>Register</Button>
-              </div>
+            <div className="w-[300px] mt-6 flex flex-col items-center justify-center gap-4">
+              <Button
+                variant="secondary"
+                className="w-full"
+                onClick={() => router.push("/register")}
+              >
+                Register
+              </Button>
+            </div>
           </Form>
         </div>
       </div>
     </div>
   );
 }
-

@@ -52,7 +52,7 @@ export default function Register() {
     <div>
       <div className="flex h-screen">
         <div
-          className="flex-1 bg-cover"
+          className="flex-1 bg-cover hidden md:block"
           style={{ backgroundImage: `url(${BackgroundImage.src})` }}
         ></div>
         <div className="flex-1 flex flex-col justify-center items-center">
@@ -136,4 +136,3 @@ export default function Register() {
     </div>
   );
 }
-
