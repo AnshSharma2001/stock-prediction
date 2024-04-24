@@ -30,6 +30,7 @@ interface Model {
   monthlyMSE?: number;
   yearlyMSE?: number;
   Tags?: string[];
+  imgURL: string;
 }
 
 interface ModelCategoryCarouselProps {
@@ -69,6 +70,7 @@ export const ModelCategoryCarousel = ({
                     Name={model.Name}
                     Subscribe_Count={model.Subscribe_Count}
                     UserID={model.UserID}
+                    imgURL={model.imgURL}
                   />
                 </Link>
               </CarouselItem>

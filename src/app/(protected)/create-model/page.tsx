@@ -2,13 +2,11 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form"; 
+import { useForm } from "react-hook-form";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
-
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,11 +14,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 import {
   Select,
@@ -30,7 +28,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 import {
   Card,
@@ -39,14 +37,18 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import { Tags } from "lucide-react";
+import { ImageUpload } from "@/components/image-upload";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   description: z.string().min(2).max(Infinity),
   tagID: z.array(z.number().min(1)),
   modelFile: z.instanceof(File).optional(),
+  src: z.string().min(1, {
+    message: "Image is required.",
+  }),
 });
 
 const useJWT = () => {
@@ -55,9 +57,9 @@ const useJWT = () => {
   useEffect(() => {
     const fetchSession = async () => {
       const session = await getSession();
-      console.log(session?.user.accessToken)
+      console.log(session?.user.accessToken);
       if (session?.user.accessToken) {
-        setJwtId(session.user.accessToken)
+        setJwtId(session.user.accessToken);
       }
     };
 
@@ -70,14 +72,14 @@ const useJWT = () => {
 const CreateModel = () => {
   const [file, setFile] = useState<File | undefined>(undefined);
   const JwtId = useJWT(); // Move the useJWT hook here.
-  
-  const router = useRouter(); 
+
+  const router = useRouter();
   const tags = [
     { id: 1, label: "Finance" },
     { id: 2, label: "Technology" },
-    { id: 3, label: "Services"}
-  ]
-  
+    { id: 3, label: "Services" },
+  ];
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -85,19 +87,21 @@ const CreateModel = () => {
       description: "",
       tagID: [],
       modelFile: undefined,
+      src: "",
     },
   });
-  const {register, handleSubmit, setValue, watch } = form
+  const { register, handleSubmit, setValue, watch } = form;
 
   const submitModel = (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
-    formData.append("name", values.name)
-    formData.append("description", values.description)
-    values.tagID.forEach(tag => formData.append("tags", String(tag)))
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    values.tagID.forEach((tag) => formData.append("tags", String(tag)));
 
     if (file) {
-      formData.append("model_file", file)
+      formData.append("model_file", file);
     }
+    formData.append("imgUrl", values.src);
 
     // Here you would make your API request
     console.log("Form Data Prepared:", Object.fromEntries(formData));
@@ -105,67 +109,86 @@ const CreateModel = () => {
       try {
         const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/model/add`;
         const response = await fetch(url, {
-          method: 'POST',
+          method: "POST",
           headers: {
-              'Authorization': `Bearer ${JwtId}`,
+            Authorization: `Bearer ${JwtId}`,
           },
           body: formData,
-        })
-  
+        });
+
         if (response.ok) {
           const jsonResponse = await response.json();
           console.log("Success:", jsonResponse);
-          router.replace("/view-models"); 
+          router.replace("/view-models");
           return jsonResponse;
         } else {
           throw new Error("Failed to submit model");
         }
       } catch (error) {
         console.error("Error:", error);
-      };
-    }
+      }
+    };
     SendForm();
-  }
+  };
 
   const handleTagSelection = (tagLabel: any) => {
-    console.log(tagLabel)
-    const selectedTagIds = []
+    console.log(tagLabel);
+    const selectedTagIds = [];
     for (const tag of tags) {
       if (tag.label === tagLabel) {
-        selectedTagIds.push(tag.id)
-        setValue('tagID', selectedTagIds);
+        selectedTagIds.push(tag.id);
+        setValue("tagID", selectedTagIds);
       }
     }
-  }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file) {
-      setFile(file)
+      setFile(file);
     } // You can use this state to show file information or for form submission
     else {
       setFile(undefined);
     }
   };
 
-  
-
   return (
-    <div className="h-full p-8">
-      <Card className="h-full p-8">
+    <div className=" flex justify-center p-8">
+      <Card className="p-8 w-full md:w-1/2">
         <h2 className="text-3xl font-bold mb-4">Model Submission</h2>
         <Form {...form}>
-          <form onSubmit={handleSubmit(submitModel)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(submitModel)} className="space-y-4">
+            <FormField
+              name="src"
+              render={({ field }) => (
+                <FormItem className="flex flex-col items-center justify-center space-y-4 ">
+                  <FormControl>
+                    <ImageUpload
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormItem className="flex flex-col">
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input className="rounded-md p-2" placeholder="Enter model name" {...register("name")} />
+                <Input
+                  className="rounded-md p-2"
+                  placeholder="Enter model name"
+                  {...register("name")}
+                />
               </FormControl>
             </FormItem>
             <FormItem className="flex flex-col">
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Type your description here" {...register("description")}/>
+                <Textarea
+                  placeholder="Type your description here"
+                  {...register("description")}
+                />
               </FormControl>
             </FormItem>
             <FormItem>
@@ -176,9 +199,11 @@ const CreateModel = () => {
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Tags</SelectLabel>
-                      {tags.map(tag => (
-                        <SelectItem key={tag.id} value={tag.label}>{tag.label}</SelectItem>
-                      ))}
+                    {tags.map((tag) => (
+                      <SelectItem key={tag.id} value={tag.label}>
+                        {tag.label}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -188,7 +213,7 @@ const CreateModel = () => {
               <Label htmlFor="picture" className="flex items-center gap-2">
                 Upload <Tags /> File extension: .joblib
               </Label>
-              <Input id="picture" type="file" onChange={handleFileChange}/>
+              <Input id="picture" type="file" onChange={handleFileChange} />
             </div>
 
             <Button type="submit" className="rounded-md py-2">

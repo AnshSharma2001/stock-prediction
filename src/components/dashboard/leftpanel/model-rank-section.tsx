@@ -18,6 +18,7 @@ interface Model {
   monthlyMSE?: number;
   yearlyMSE?: number;
   Tags?: string[];
+  imgURL: string;
 }
 
 type Tag = {

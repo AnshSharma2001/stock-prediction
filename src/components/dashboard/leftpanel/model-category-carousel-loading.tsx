@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -9,12 +9,6 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
-import React, { useState } from "react";
-import { Heart, ThumbsUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { BaseCard } from "@/components/model-card/base-card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const ModelCategoryCarouselLoading = ({
