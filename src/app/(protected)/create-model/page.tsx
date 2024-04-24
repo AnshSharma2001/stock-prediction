@@ -39,12 +39,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tags } from "lucide-react";
+import { ImageUpload } from "@/components/image-upload";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
   description: z.string().min(2).max(Infinity),
   tagID: z.array(z.number().min(1)),
   modelFile: z.instanceof(File).optional(),
+  src: z.string().min(1, {
+    message: "Image is required.",
+  }),
 });
 
 const useJWT = () => {
@@ -83,6 +87,7 @@ const CreateModel = () => {
       description: "",
       tagID: [],
       modelFile: undefined,
+      src: "",
     },
   });
   const { register, handleSubmit, setValue, watch } = form;
@@ -96,6 +101,7 @@ const CreateModel = () => {
     if (file) {
       formData.append("model_file", file);
     }
+    formData.append("imgUrl", values.src);
 
     // Here you would make your API request
     console.log("Form Data Prepared:", Object.fromEntries(formData));
@@ -147,11 +153,25 @@ const CreateModel = () => {
   };
 
   return (
-    <div className="h-full p-8">
-      <Card className="h-full p-8">
+    <div className=" flex justify-center p-8">
+      <Card className="p-8 w-full md:w-1/2">
         <h2 className="text-3xl font-bold mb-4">Model Submission</h2>
         <Form {...form}>
-          <form onSubmit={handleSubmit(submitModel)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(submitModel)} className="space-y-4">
+            <FormField
+              name="src"
+              render={({ field }) => (
+                <FormItem className="flex flex-col items-center justify-center space-y-4 ">
+                  <FormControl>
+                    <ImageUpload
+                      onChange={field.onChange}
+                      value={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormItem className="flex flex-col">
               <FormLabel>Name</FormLabel>
               <FormControl>

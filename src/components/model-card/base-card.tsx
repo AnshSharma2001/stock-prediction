@@ -15,6 +15,7 @@ interface Model {
   Name: string;
   Subscribe_Count: number;
   UserID: number;
+  imgURL: string;
 }
 
 export const BaseCard = ({
@@ -25,6 +26,7 @@ export const BaseCard = ({
   Name,
   Subscribe_Count,
   UserID,
+  imgURL,
 }: Model) => {
   const [likes, setLikes] = useState<{ [modelId: number]: boolean }>({});
   const toggleLike = (modelId: number) => {
@@ -39,13 +41,16 @@ export const BaseCard = ({
     <div className="p-1 cursor-pointer max-w-sm">
       <Card className="shadow-none ">
         <CardContent className="relative p-0">
-          <Image
-            className="rounded-xl"
-            height={225}
-            width={400}
-            src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="some model image"
-          />
+          <div className="aspect-video">
+            <Image
+              className="rounded-xl"
+              fill
+              // height={225}
+              // width={400}
+              src={imgURL || "/no-image-svgrepo-com.svg"}
+              alt="some model image"
+            />
+          </div>
         </CardContent>
       </Card>
       <div className="flex justify-between items-center pl-1">

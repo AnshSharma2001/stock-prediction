@@ -16,7 +16,7 @@ const Dashboard = () => {
   console.log(process.env);
 
   return (
-    <div className="px-8 flex flex-col items-center mt-12 mb-5">
+    <div className="px-8 flex flex-col items-center mt-12 mb-5 space-y-40 ">
       <TopModels />
       <ScrollPanel />
       {/* <FixedRightBar /> */}
