@@ -20,6 +20,7 @@ interface CommentType {
   userName: string;
   userProfilePic: string | null;
   isUserAuthor: boolean; 
+  isUpvoted: boolean
 }
 
 interface ModelType {
@@ -127,10 +128,11 @@ const useUserDetails = () => {
 };
 
 
-const Comment: React.FC<{ comment: CommentType }> = ({ comment }) => {
+const Comment: React.FC<{ comment: CommentType, onDelete: (commentId: number) => void }> = ({ comment, onDelete }) => {
   const [voteCount, setVoteCount] = useState(comment.voteCount);
-  const [isUpvoted, setIsUpvoted] = useState(false); // This state will be toggled based on the response
-  const { jwtToken } = useUserDetails(); // Assuming this hook provides the JWT token
+  const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);  // This state will be toggled based on the response
+  const { jwtToken,userId } = useUserDetails(); // Assuming this hook provides the JWT token
+  const [reviews, setReviews] = useState<CommentType[]>([]);
 
   // A function to toggle the upvote status
   const handleUpvote = async () => {
@@ -163,10 +165,40 @@ const Comment: React.FC<{ comment: CommentType }> = ({ comment }) => {
         // Revert if the server responds with an error
         alert(`Failed to toggle upvote: ${data.message || response.statusText}`);
       }
+      
     } catch (error) {
       console.error("Error while toggling the upvote:", error);
       alert("An error occurred while toggling the upvote.");
       // Revert the optimistic UI update on error
+    }
+  };
+
+
+  const handleDelete = async () => {
+    if (!jwtToken) {
+      alert("You must be logged in to delete comments.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`https://techblacker.com/review/delete_review/${comment.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`
+        }
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(`Failed to delete comment: ${errorData.message}`);
+        return;
+      }
+      onDelete(comment.id);
+  
+      // Remove the deleted comment from the reviews array
+    } catch (error) {
+      console.error("Error deleting the comment:", error);
+      alert("An error occurred while deleting the comment.");
     }
   };
 
@@ -178,14 +210,15 @@ const Comment: React.FC<{ comment: CommentType }> = ({ comment }) => {
       </div>
       <div className={styles.content}>{comment.text}</div>
       <div className={styles.voteContainer}>
-        <button
-          className={styles.voteButton}
-          onClick={handleUpvote}
-          disabled={!jwtToken}  
-        >
+        <button className={styles.voteButton} onClick={handleUpvote} disabled={!jwtToken}>
           <ArrowBigUp fill={isUpvoted ? '#2563eb' : 'none'} color={'#2563eb'} size="35" />
         </button>
         <span className={styles.voteCount}>{voteCount}</span>
+        {userId === comment.userId && (
+          <button className={styles.deleteButton} onClick={handleDelete} title="Delete comment">
+            X
+          </button>
+        )}
       </div>
     </div>
   );
@@ -200,51 +233,72 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
   const [error, setError] = useState<string | null>(null);
   const { jwtToken, userId } = useUserDetails();
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      if (userId) {
-        setLoading(true);
-        try {
-          const response = await fetch(`https://techblacker.com/general/models/${model.Model_ID}/reviews`);
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
-          setReviews(data.map((item: any) => ({
-            id: item.Review_ID,
-            text: item.Comment,
-            voteCount: item.Upvote,
-            userId: item.Reviewer_ID,
-            userName: item.Reviewer_Name,
-            userProfilePic: item.Reviewer_Profile_Pic,
-            isUpvoted: item.Upvoter_IDs?.split(', ').includes(userId.toString())
-          })));
-        } catch (error: any) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Check if Enter was pressed without Shift
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault(); // Prevent the default action to avoid a newline in textarea
+      if (newComment.trim()) {
+        handleCommentSubmit(event as unknown as { preventDefault: () => void }); // Simulate form submit
       }
-    };
+    }
+  };
 
+  // Function to fetch reviews
+  const fetchReviews = async () => {
+    if (userId) {
+      setLoading(true);
+      try {
+        const response = await fetch(`https://techblacker.com/general/models/${model.Model_ID}/reviews`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        const sortedReviews = data.map((item: any) => ({
+
+          id: item.Review_ID,
+          text: item.Comment,
+          voteCount: item.Upvote,
+          userId: item.Reviewer_ID,
+          userName: item.Reviewer_Name,
+          userProfilePic: item.Reviewer_Profile_Pic,
+          isUpvoted: item.Upvoter_IDs?.split(', ').includes(userId.toString())
+        })).sort((a: CommentType, b: CommentType) => b.voteCount - a.voteCount); // Sorting by vote count in descending order
+  
+        setReviews(sortedReviews);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+
+
+  // Initial fetch of reviews
+  useEffect(() => {
     fetchReviews();
   }, [userId, model.Model_ID]);
 
+
+  const handleDeleteComment = (commentId: number) => {
+    setReviews(prevReviews => prevReviews.filter(comment => comment.id !== commentId));
+  };
+
   const handleCommentSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-  
+
     if (!jwtToken || !userId) {
       console.error("JWT token or user ID is missing");
       alert("You must be logged in to submit a comment.");
       return;
     }
-  
+
     const commentData = {
       model_id: model.Model_ID,
       comment: newComment,
     };
-  
-  
+
     try {
       const response = await fetch('https://techblacker.com/review/add_review', {
         method: 'POST',
@@ -254,14 +308,13 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
         },
         body: JSON.stringify(commentData),
       });
-  
-      const data = await response.json();
-  
+
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || "Failed to submit comment");
       }
       setNewComment('');
-  
+      fetchReviews(); // Refresh comments after successful submission
     } catch (error) {
       console.error("Error while submitting the comment:", error);
       alert("An error occurred while submitting the comment.");
@@ -294,10 +347,11 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
       <div className={styles.outerContainer}>
         <div className={styles.header}>Community Feedback</div>
         <form className={styles.newCommentForm} onSubmit={handleCommentSubmit}>
-          <textarea
+        <textarea
             className={styles.commentInput}
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
+            onKeyDown={handleKeyPress} // Add this line
             placeholder="Provide Feedback Here..."
             rows={3}
           ></textarea>
@@ -305,7 +359,7 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
         </form>
         <div className={styles.commentsContainer}>
           {reviews.map(comment => (
-            <Comment key={comment.id} comment={comment} />
+             <Comment key={comment.id} comment={comment} onDelete={handleDeleteComment} />
           ))}
         </div>
       </div>

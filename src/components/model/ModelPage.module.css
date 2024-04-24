@@ -96,3 +96,15 @@
 .voteCount {
   margin-top: 4px;
 }
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Center align the button content vertically */
+  padding: 0;
+  font-size: 20px; /* Adjust size as needed */
+}
