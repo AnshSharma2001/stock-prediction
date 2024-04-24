@@ -61,18 +61,16 @@ export const ModelCategoryCarousel = ({
                 key={model.Model_ID}
                 className=" basis-full md:basis-1/3"
               >
-                <Link href={`/view-models/${model.Model_ID}`}>
-                  <BaseCard
-                    Description={model.Description}
-                    Like_Count={model.Like_Count}
-                    Model_File_Path={model.Model_File_Path}
-                    Model_ID={model.Model_ID}
-                    Name={model.Name}
-                    Subscribe_Count={model.Subscribe_Count}
-                    UserID={model.UserID}
-                    imgURL={model.imgURL}
+                <BaseCard
+                  Description={model.Description}
+                  Like_Count={model.Like_Count}
+                  Model_File_Path={model.Model_File_Path}
+                  Model_ID={model.Model_ID}
+                  Name={model.Name}
+                  Subscribe_Count={model.Subscribe_Count}
+                  UserID={model.UserID}
+                  imgURL={model.imgURL}
                   />
-                </Link>
               </CarouselItem>
             ))}
           </CarouselContent>
