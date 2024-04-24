@@ -33,3 +33,15 @@ export const RegisterSchema = z.object({
     message: "Name is required",
   }),
 });
+
+export const ChangePasswordSchema = z.object({
+  username: z.string().min(1, {
+    message: "Username is required",
+  }),
+  old_password: z.string().min(6, {
+    message: "Minimum 6 characters required",
+  }),
+  new_password: z.string().min(6, {
+    message: "Minimum 6 characters required",
+  }),
+});
