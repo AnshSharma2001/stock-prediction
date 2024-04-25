@@ -331,7 +331,7 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
       <div className="my-6">
         <CurvedlineChart className="w-full h-[300px]" data={defaultChartData} />
       </div>
-      <Tabs className="mb-6" defaultValue="24hrs">
+      <Tabs className="mb-6" defaultValue="24hrs" onValueChange={setTimeFrame}>
         <TabsList>
           <TabsTrigger value="24hrs">24hrs</TabsTrigger>
           <TabsTrigger value="1week">1 week</TabsTrigger>
@@ -366,6 +366,23 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
     </div>
   );
 };
+
+const [timeframe, setTimeframe] = useState('24hrs');
+const [chartData, setChartData] = useState([]);
+
+useEffect(() => {
+    const fetchData = async () => {
+      // Simulate fetching data. Replace this with actual fetch call.
+      const rawData = AMZN.find(item => item.Timeframe_Name === timeframeMap[timeframe]).Raw_Data;
+      const parsedData = parseChartData(rawData);
+      setChartData([
+        { id: "Actual", data: parsedData.actual },
+        { id: "Predicted", data: parsedData.predicted },
+      ]);
+    };
+  
+    fetchData();
+  }, [timeframe]);
 
 const CurvedlineChart: React.FC<CurvedlineChartProps> = ({
   className,

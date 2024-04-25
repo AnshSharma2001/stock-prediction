@@ -5,7 +5,7 @@ import { AvatarSkeleton } from "./avatar-skeleton";
 interface TeamItemProps {
   name: string;
   role: string;
-  imageSource: StaticImageData;
+  imageSource: string;
 }
 
 export const TeamItem = ({ name, role, imageSource }: TeamItemProps) => {

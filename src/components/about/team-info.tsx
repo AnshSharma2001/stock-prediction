@@ -2,12 +2,6 @@ import React from "react";
 import Image from "next/image";
 import { TeamItem } from "./team-item";
 
-import maulik from "/public/team/maulik.jpg";
-import ansh from "/public/team/ansh.jpeg";
-import huy from "/public/team/huy.jpg";
-import ishaan from "/public/team/ishaan.jpg";
-import joey from "/public/team/joey.jpeg";
-import muawiz from "/public/team/muawiz.jpeg";
 
 export const TeamInfo = () => {
   return (
@@ -15,33 +9,33 @@ export const TeamInfo = () => {
       <TeamItem
         name="Ansh Sharma"
         role="Software Engineer"
-        imageSource={ansh}
+        imageSource= "/team/ansh.jpeg"
 
       />
       <TeamItem
         name="Maulik Sehgal"
         role="Software Engineer"
-        imageSource = {maulik}
+        imageSource = "/team/maulik.jpg"
       />
       <TeamItem
         name="Huy Nguyen"
         role="Software Engineer"
-        imageSource={huy}
+        imageSource="/team/huy.jpg"
       />
       <TeamItem
         name="Ishan Poudel"
         role="Software Engineer"
-        imageSource={ishaan}
+        imageSource="/team/ishaan.jpg"
       />
       <TeamItem
         name="Joey Hussain"
         role="Software Engineer"
-        imageSource={joey}
+        imageSource="/team/joey.jpeg"
       />
       <TeamItem
         name="Muhammad Farooqi Muawiz"
         role="Software Engineer"
-        imageSource={muawiz}
+        imageSource="/team/muawiz.jpeg"
       />
     </div>
   );
