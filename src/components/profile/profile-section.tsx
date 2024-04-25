@@ -65,13 +65,13 @@ export function ProfileSection() {
           <Card className=" rounded-lg shadow-lg p-6 hover:bg-secondary ">
             <h2 className="text-2xl font-semibold mb-4">Bio</h2>
             <p className="">
-              {profileData?.Name} is a passionate AI engineer who loves building cutting-edge
-              machine learning models. He has a deep fascination with the
-              intersection of technology and creativity, and is always exploring
-              new ways to push the boundaries of whats possible. In his free
-              time, you can find him tinkering with the latest AI frameworks,
-              reading up on the latest research, or experimenting with
-              generative art.
+              {profileData?.Name} is a passionate AI engineer who loves building
+              cutting-edge machine learning models. He has a deep fascination
+              with the intersection of technology and creativity, and is always
+              exploring new ways to push the boundaries of whats possible. In
+              his free time, you can find him tinkering with the latest AI
+              frameworks, reading up on the latest research, or experimenting
+              with generative art.
             </p>
           </Card>
           <UserModels />
