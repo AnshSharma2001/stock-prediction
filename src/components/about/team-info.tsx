@@ -15,7 +15,7 @@ export const TeamInfo = () => {
       <TeamItem
         name="Maulik Sehgal"
         role="Software Engineer"
-        imageSource = "/team/maulik.jpg"
+        imageSource = "/team/maulik.JPG"
       />
       <TeamItem
         name="Huy Nguyen"
