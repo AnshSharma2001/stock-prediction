@@ -1,11 +1,11 @@
 import React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { AvatarSkeleton } from "./avatar-skeleton";
 
 interface TeamItemProps {
   name: string;
   role: string;
-  imageSource: string;
+  imageSource: StaticImageData;
 }
 
 export const TeamItem = ({ name, role, imageSource }: TeamItemProps) => {
