@@ -26,7 +26,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-
 const useJWT = () => {
   const [JwtId, setJwtId] = useState<string | null>(null);
 
@@ -68,7 +67,7 @@ export function ProfileSection() {
 
   const submitProfilePicture = (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
-    formData.append("profile_picture_url", values.profile_picture_url);    
+    formData.append("profile_picture_url", values.profile_picture_url);
 
     // Here you would make your API request
     console.log("Form Data Prepared:", Object.fromEntries(formData));
@@ -93,6 +92,8 @@ export function ProfileSection() {
         }
       } catch (error) {
         console.error("Error:", error);
+      } finally {
+        router.replace("/");
       }
     };
     SendForm();
@@ -112,32 +113,37 @@ export function ProfileSection() {
         className="shrink-0 bg-border h-[1px] w-full"
       ></div>
       <div className="grid gap-7">
-      <Card className=" rounded-lg shadow-lg p-6 hover:bg-secondary ">
-        <h2 className="text-2xl font-semibold mb-4">Update Profile Picture</h2>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(submitProfilePicture)} className="space-y-4">
-            <FormField
-              name="profile_picture_url"
-              render={({ field }) => (
-                <FormItem className="flex flex-col items-center justify-center space-y-4 ">
-                  <FormControl>
-                    <ImageUpload
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex justify-center py-10">
-            <Button type="submit" className="rounded-md py-2">
-              Submit
-            </Button>
-            </div>
-          </form>
-        </Form>
-      </Card>
+        <Card className=" rounded-lg shadow-lg p-6 hover:bg-secondary ">
+          <h2 className="text-2xl font-semibold mb-4">
+            Update Profile Picture
+          </h2>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(submitProfilePicture)}
+              className="space-y-4"
+            >
+              <FormField
+                name="profile_picture_url"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col items-center justify-center space-y-4 ">
+                    <FormControl>
+                      <ImageUpload
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-center py-10">
+                <Button type="submit" className="rounded-md py-2">
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </Card>
       </div>
     </div>
   );
