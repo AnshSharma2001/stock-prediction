@@ -9,6 +9,11 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { TeamInfo } from "./team-info";
 
+const imgFedURL = "https://images.unsplash.com/photo-1631216166880-9e9b51577962?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fHN0b2Nrc3xlbnwwfHwwfHx8MA%3D%3D";
+const imgStockDefaultURL ="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"; 
+
+
+
 export function AboutSection() {
   return (
     <div className="flex flex-col pt-10">
@@ -40,7 +45,7 @@ export function AboutSection() {
                 alt="Hero"
                 className="aspect-video overflow-hidden rounded-xl object-bottom"
                 height="275"
-                src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src={imgStockDefaultURL}
                 width="550"
               />
             </div>
@@ -59,7 +64,7 @@ export function AboutSection() {
               <p className="max-w-[800px] text-gray-500 md:text-xl dark:text-gray-400">
                 Our team of experts brings years of experience in finance, data
                 analysis, and machine learning to deliver the best insights for
-                your investment decisions. Lorem
+                your investment decisions.
               </p>
             </div>
           </div>
@@ -84,7 +89,7 @@ export function AboutSection() {
                 alt="Hero"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-bottom"
                 height="450"
-                src="https://images.unsplash.com/photo-1631216166880-9e9b51577962?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDd8fHN0b2Nrc3xlbnwwfHwwfHx8MA%3D%3D"
+                src={imgFedURL}
                 width="900"
               />
               <div className="grid gap-4">

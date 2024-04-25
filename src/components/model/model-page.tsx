@@ -5,6 +5,8 @@ import { ResponsiveLine } from "@nivo/line";
 import { TabsTrigger, TabsList, Tabs } from "@/components/ui/tabs";
 import { ArrowBigUp } from 'lucide-react';
 import { getSession } from 'next-auth/react';
+import Image from "next/image";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface User {
   id: number;
@@ -18,7 +20,7 @@ interface CommentType {
   voteCount: number;
   userId: number;
   userName: string;
-  userProfilePic: string | null;
+  userProfilePic?: string;
   isUserAuthor: boolean; 
   isUpvoted: boolean
 }
@@ -205,7 +207,14 @@ const Comment: React.FC<{ comment: CommentType, onDelete: (commentId: number) =>
   return (
     <div className={styles.commentBox}>
       <div className={styles.userInfo}>
-        <img src={comment.userProfilePic || defaultProfilePic} alt={`${comment.userName}'s profile`} className={styles.profilePic} />
+        {/* <Image src={comment.userProfilePic || defaultProfilePic} alt={`${comment.userName}'s profile`} width={50} height={50} /> */}
+        <Avatar>
+          <AvatarImage src={comment.userProfilePic}/>
+          <AvatarFallback>
+            {comment.userName.charAt(0).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        
         <div className={styles.userName}>{comment.userName}</div>
       </div>
       <div className={styles.content}>{comment.text}</div>
@@ -331,7 +340,7 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
       <div className="my-6">
         <CurvedlineChart className="w-full h-[300px]" data={defaultChartData} />
       </div>
-      <Tabs className="mb-6" defaultValue="24hrs">
+      <Tabs className="mb-6" defaultValue="24hrs" >
         <TabsList>
           <TabsTrigger value="24hrs">24hrs</TabsTrigger>
           <TabsTrigger value="1week">1 week</TabsTrigger>
@@ -366,6 +375,23 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
     </div>
   );
 };
+
+// const [timeframe, setTimeframe] = useState('24hrs');
+// const [chartData, setChartData] = useState([]);
+
+// useEffect(() => {
+//     const fetchData = async () => {
+//       // Simulate fetching data. Replace this with actual fetch call.
+//       const rawData = AMZN.find(item => item.Timeframe_Name === timeframeMap[timeframe]).Raw_Data;
+//       const parsedData = parseChartData(rawData);
+//       setChartData([
+//         { id: "Actual", data: parsedData.actual },
+//         { id: "Predicted", data: parsedData.predicted },
+//       ]);
+//     };
+  
+//     fetchData();
+//   }, [timeframe]);
 
 const CurvedlineChart: React.FC<CurvedlineChartProps> = ({
   className,
