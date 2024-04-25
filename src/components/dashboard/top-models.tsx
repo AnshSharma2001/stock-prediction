@@ -78,7 +78,7 @@ export const TopModels = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://techblacker.com/general/models/average_mse_by_model_and_timeframe"
+          `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models/average_mse_by_model_and_timeframe`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

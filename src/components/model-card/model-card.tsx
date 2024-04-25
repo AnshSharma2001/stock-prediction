@@ -62,7 +62,7 @@ const useUserDetails = () => {
       const session = await getSession();
       if (session?.user?.accessToken) {
         const jwtToken = session.user.accessToken;
-        const url = 'https://techblacker.com/protected';
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/protected`;
         const response = await fetch(url, {
           method: 'GET',
           headers: {

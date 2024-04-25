@@ -12,7 +12,7 @@ export default {
         if (validatedFields.success) {
           const { username, password } = validatedFields.data;
 
-          const response = await fetch(`https://techblacker.com/auth/login`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
