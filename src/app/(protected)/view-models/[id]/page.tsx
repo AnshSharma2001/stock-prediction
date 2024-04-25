@@ -11,9 +11,10 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import GenericModelComponent from "@/components/model/model-page";
+import CommentComponent from "@/components/model/model-comments";
+import GenericModelComponent from "@/components/model/model-graph";
 
-const ModelPage = () => {
+const ModelPageTop = () => {
   const [model, setModel] = useState<Model | null>(null);
   const pathname = usePathname();
   const modelId = pathname.split("/").pop(); // Assuming the last segment is the ID
@@ -44,13 +45,12 @@ const ModelPage = () => {
     }
   }, [modelId]);
 
-  if (!model) {
-    return <div>Loading model...</div>;
-  }
-
-  // Now you can safely access model properties because model is guaranteed to be non-null
-  return (<GenericModelComponent model={model} />
-  );
+return (
+    <div>
+        <GenericModelComponent model={model || undefined} />
+        <CommentComponent model={model || undefined} />
+    </div>
+);
 };
 
-export default ModelPage;
+export default ModelPageTop;
