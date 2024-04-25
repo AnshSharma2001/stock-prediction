@@ -46,13 +46,6 @@ interface Tag {
   TagID: number;
 }
 
-interface CurvedlineChartProps {
-  className?: string;
-  data: {
-    id: string;
-    data: { x: string; y: number }[];
-  }[];
-}
 
 
 interface UserDetails {
@@ -78,19 +71,6 @@ const defaultModel: ModelType = {
   Tags: [{ Model_ID: 0, Name: "Default Tag", TagID: 0 }],
 };
 
-const defaultChartData = [
-  {
-    id: "default",
-    data: [
-      { x: "Jan", y: 10 },
-      { x: "Feb", y: 20 },
-      { x: "Mar", y: 15 },
-      { x: "Apr", y: 37 },
-      { x: "May", y: 48 },
-      { x: "Jun", y: 53 },
-    ],
-  },
-];
 
 const useUserDetails = () => {
   const [details, setDetails] = useState<UserDetails>({
@@ -103,7 +83,7 @@ const useUserDetails = () => {
       const session = await getSession();
       if (session?.user?.accessToken) {
         const jwtToken = session.user.accessToken;
-        const url = 'https://techblacker.com/protected';
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/protected`;
         const response = await fetch(url, {
           method: 'GET',
           headers: {
@@ -153,7 +133,7 @@ const Comment: React.FC<{ comment: CommentType, onDelete: (commentId: number) =>
     setVoteCount(newVoteCount);
   
     try {
-      const response = await fetch(`https://techblacker.com/review/toggle_upvote/${comment.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/review/toggle_upvote/${comment.id}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${jwtToken}`,
@@ -183,7 +163,7 @@ const Comment: React.FC<{ comment: CommentType, onDelete: (commentId: number) =>
     }
   
     try {
-      const response = await fetch(`https://techblacker.com/review/delete_review/${comment.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/review/delete_review/${comment.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${jwtToken}`
@@ -233,7 +213,7 @@ const Comment: React.FC<{ comment: CommentType, onDelete: (commentId: number) =>
   );
 };
 
-const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
+const CommentComponent: React.FC<{ model?: ModelType }> = ({
   model = defaultModel,
 }) => {
   const [newComment, setNewComment] = useState('');
@@ -257,7 +237,7 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
     if (userId) {
       setLoading(true);
       try {
-        const response = await fetch(`https://techblacker.com/general/models/${model.Model_ID}/reviews`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/models/${model.Model_ID}/reviews`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -309,7 +289,7 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
     };
 
     try {
-      const response = await fetch('https://techblacker.com/review/add_review', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/review/add_review`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -333,26 +313,6 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
 
   return (
     <div className="max-w-4xl mx-auto my-8">
-      <div className="flex justify-between items-center border-b pb-4">
-        <h1 className="text-3xl font-bold">{model.Model_Name}</h1>
-        <Button variant="secondary">Like</Button>
-      </div>
-      <div className="my-6">
-        <CurvedlineChart className="w-full h-[300px]" data={defaultChartData} />
-      </div>
-      <Tabs className="mb-6" defaultValue="24hrs" >
-        <TabsList>
-          <TabsTrigger value="24hrs">24hrs</TabsTrigger>
-          <TabsTrigger value="1week">1 week</TabsTrigger>
-          <TabsTrigger value="1month">1 month</TabsTrigger>
-          <TabsTrigger value="1year">1 year</TabsTrigger>
-        </TabsList>
-      </Tabs>
-      <div className="flex flex-col gap-1 my-4">
-        <span className="font-semibold">{model.Creator_Name}</span>
-        <span className="text-muted-foreground">{model.Creator_Email}</span>
-      </div>
-      <p className="my-4">{model.Description}</p>
       <div className={styles.outerContainer}>
         <div className={styles.header}>Community Feedback</div>
         <form className={styles.newCommentForm} onSubmit={handleCommentSubmit}>
@@ -376,72 +336,5 @@ const GenericModelComponent: React.FC<{ model?: ModelType }> = ({
   );
 };
 
-// const [timeframe, setTimeframe] = useState('24hrs');
-// const [chartData, setChartData] = useState([]);
 
-// useEffect(() => {
-//     const fetchData = async () => {
-//       // Simulate fetching data. Replace this with actual fetch call.
-//       const rawData = AMZN.find(item => item.Timeframe_Name === timeframeMap[timeframe]).Raw_Data;
-//       const parsedData = parseChartData(rawData);
-//       setChartData([
-//         { id: "Actual", data: parsedData.actual },
-//         { id: "Predicted", data: parsedData.predicted },
-//       ]);
-//     };
-  
-//     fetchData();
-//   }, [timeframe]);
-
-const CurvedlineChart: React.FC<CurvedlineChartProps> = ({
-  className,
-  data,
-}) => {
-  return (
-    <div className={className}>
-      <ResponsiveLine
-        data={data}
-        margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
-        xScale={{ type: "point" }}
-        yScale={{ type: "linear", min: 0, max: "auto" }}
-        curve="monotoneX"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 0,
-          tickPadding: 16,
-        }}
-        axisLeft={{
-          tickSize: 0,
-          tickValues: 5,
-          tickPadding: 16,
-        }}
-        colors={["#2563eb", "#e11d48"]}
-        pointSize={6}
-        useMesh={true}
-        gridYValues={6}
-        theme={{
-          tooltip: {
-            chip: {
-              borderRadius: "9999px",
-            },
-            container: {
-              fontSize: "12px",
-              textTransform: "capitalize",
-              borderRadius: "6px",
-            },
-          },
-          grid: {
-            line: {
-              stroke: "#f3f4f6",
-            },
-          },
-        }}
-        role="application"
-      />
-    </div>
-  );
-};
-
-
-export default GenericModelComponent;
+export default  CommentComponent;
