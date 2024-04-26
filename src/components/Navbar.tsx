@@ -67,7 +67,7 @@ export default function Navbar() {
             height={40}
           />
         </Link>
-        <span className="text-xl font-bold">Trademinds</span>
+        <span className="text-xl font-bold">TradeMinds</span>
       </aside>
 
       <nav
