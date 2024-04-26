@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import CommentComponent from "@/components/model/model-comments";
-import GenericModelComponent from "@/components/model/model-graph";
+// import GenericModelComponent from "@/components/model/model-graph";
+import GenericModelComponent from "../model-temp-hard";
 
 const ModelPageTop = () => {
   const [model, setModel] = useState<Model | null>(null);
@@ -48,6 +49,7 @@ const ModelPageTop = () => {
 return (
     <div>
         <GenericModelComponent model={model || undefined} />
+        {/* <GenericModelComponent2 model={model || undefined} /> */}
         <CommentComponent model={model || undefined} />
     </div>
 );
