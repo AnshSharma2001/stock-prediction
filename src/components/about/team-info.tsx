@@ -33,7 +33,7 @@ export const TeamInfo = () => {
         imageSource="/team/joey.jpeg"
       />
       <TeamItem
-        name="Muhammad Farooqi Muawiz"
+        name="Muhammad Muawiz Farooqi"
         role="Software Engineer"
         imageSource="/team/muawiz.jpeg"
       />

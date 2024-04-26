@@ -88,20 +88,20 @@ export default function Navbar() {
       </nav>
 
       <aside className=" flex gap-2 items-center">
-            <Link href='/create-model' passHref>
-              <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button size="sm" variant="secondary">
-                        <PlusIcon className=" w-4 h-4 font-bold" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Create a model</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-            </Link>
+        <Link href="/create-model" passHref>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="sm" variant="secondary">
+                  <PlusIcon className=" w-4 h-4 font-bold" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Create a model</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </Link>
         <DropDownNav />
       </aside>
     </div>

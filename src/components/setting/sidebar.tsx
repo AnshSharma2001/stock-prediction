@@ -11,7 +11,6 @@ const paths = [
     title: "Profile",
     id: 1,
   },
-  // Please make the folders for all these routes accordingly, the page.tsx inside (routes)/general/
   {
     url: "/settings/account",
     title: "Account",

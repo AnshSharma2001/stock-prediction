@@ -105,11 +105,7 @@ export function AccountSection() {
                 <FormItem>
                   <FormLabel>Old Password</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isPending}
-                      type="old_password"
-                      {...field}
-                    />
+                    <Input disabled={isPending} type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,11 +118,7 @@ export function AccountSection() {
                 <FormItem>
                   <FormLabel>New Password</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isPending}
-                      type="new_password"
-                      {...field}
-                    />
+                    <Input disabled={isPending} type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

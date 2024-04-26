@@ -211,7 +211,12 @@ const CreateModel = () => {
 
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture" className="flex items-center gap-2">
-                Upload <Tags /> File extension: .joblib
+                <div className="flex gap-2 items-center">
+                  Upload <Tags />
+                  <div className="text-muted-foreground">
+                    File extension: .joblib
+                  </div>
+                </div>
               </Label>
               <Input id="picture" type="file" onChange={handleFileChange} />
             </div>

@@ -16,7 +16,7 @@ interface Model {
   imgURL: string;
 }
 
-export const UserModels = () => {
+export const LikedModels = () => {
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,7 @@ export const UserModels = () => {
       const jwtToken = session?.user.accessToken;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/usermodels`, // Replace with your API URL
+        `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/userlikes`, // Replace with your API URL
         {
           method: "GET",
           headers: {
@@ -57,7 +57,7 @@ export const UserModels = () => {
         <></>
       ) : (
         <>
-          <h2 className="text-2xl font-semibold">My Models</h2>
+          <h2 className="text-2xl font-semibold">Liked Models</h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
             {models.map((model) => (
               <ModelCardProfile

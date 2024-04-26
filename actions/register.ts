@@ -12,7 +12,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   const { email, password, username } = validatedFields.data;
 
-  const response = await fetch(`https://techblacker.com/auth/register`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,31 +1,9 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useRouter } from "next/navigation"; 
 import { useTheme } from "next-themes";
-import { change_password } from "../../../actions/change_password";
-import { ChangePasswordSchema } from "../../../schemas/index";
-import { FormSuccess } from "@/components/form-success";
-import { FormError } from "@/components/form-error";
 
 import Image from 'next/image';
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import { Input } from "@/components/ui/input";
 
@@ -113,20 +91,3 @@ export const AppearanceSection = () => {
     </div>
   );
 };
-
-
-// "https://i.ibb.co/87TzPqH/Screenshot-2024-04-16-131942.png" DARK
-// "https://i.ibb.co/wL7Scpb/Screenshot-2024-04-16-131929.png" LIGHT
-// "https://i.ibb.co/przxFn1/Frame-1.jpg" SYSTEM
-
-{/* <DropdownMenuItem onClick={() => setTheme("light")}>
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  System
-                </DropdownMenuItem> */}

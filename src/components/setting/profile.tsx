@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,10 +8,14 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { change_password } from "../../../actions/change_password";
 import { ChangePasswordSchema } from "../../../schemas/index";
+import { ImageUpload } from "@/components/image-upload";
 import { FormSuccess } from "@/components/form-success";
 import { FormError } from "@/components/form-error";
-
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { getSession } from "next-auth/react";
+import { Card } from "@/components/ui/card";
+
 import {
   Form,
   FormControl,
@@ -22,47 +26,77 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Input } from "@/components/ui/input";
+const useJWT = () => {
+  const [JwtId, setJwtId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      if (session?.user.accessToken) {
+        setJwtId(session.user.accessToken);
+      }
+    };
+
+    fetchSession();
+  }, []);
+
+  return JwtId;
+};
+
+const formSchema = z.object({
+  profile_picture_url: z.string().min(1, {
+    message: "Image is required.",
+  }),
+});
 
 export function ProfileSection() {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const router = useRouter();
   const { theme } = useTheme();
+  const jwtToken = useJWT();
 
-  const form = useForm<z.infer<typeof ChangePasswordSchema>>({
-    resolver: zodResolver(ChangePasswordSchema),
+  const [isPending, startTransition] = useTransition();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      old_password: "",
-      new_password: "",
+      profile_picture_url: "",
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-  console.log(isPending);
-  console.log(startTransition);
+  const submitProfilePicture = (values: z.infer<typeof formSchema>) => {
+    const formData = new FormData();
+    formData.append("profile_picture_url", values.profile_picture_url);
 
-  // Define a submit handler
-  const onSubmit = (values: z.infer<typeof ChangePasswordSchema>) => {
-    setError("");
-    setSuccess("");
+    // Here you would make your API request
+    console.log("Form Data Prepared:", Object.fromEntries(formData));
+    const SendForm = async () => {
+      try {
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_DEV_URL}/general/update_profile_picture`;
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          body: formData,
+        });
 
-    startTransition(() => {
-      change_password(values)
-        .then((data) => {
-          if (data?.error) {
-            form.reset();
-            setError(data.error);
-          }
-
-          if (data?.success) {
-            form.reset();
-            setSuccess(data.success);
-          }
-        })
-        .catch(() => setError("Something went wrong!"));
-    });
+        if (response.ok) {
+          const jsonResponse = await response.json();
+          console.log("Success:", jsonResponse);
+          router.replace("/settings");
+          return jsonResponse;
+        } else {
+          throw new Error("Failed to upload profile picture");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        router.replace("/");
+      }
+    };
+    SendForm();
   };
 
   return (
@@ -79,70 +113,37 @@ export function ProfileSection() {
         className="shrink-0 bg-border h-[1px] w-full"
       ></div>
       <div className="grid gap-7">
-        <h2 className="font-semibold leading-none tracking-tight">
-          Update Password
-        </h2>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 w-[300px]"
-          >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input disabled={isPending} type="username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="old_password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Old Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      type="old_password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="new_password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>New Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      type="new_password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormError message={error} />
-            <FormSuccess message={success} />
-            <div className="mt-6 flex flex-col items-center justify-center gap-2">
-              <Button className="w-full" type="submit" disabled={isPending}>
-                Change Password
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <Card className=" rounded-lg shadow-lg p-6 hover:bg-secondary ">
+          <h2 className="text-2xl font-semibold mb-4">
+            Update Profile Picture
+          </h2>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(submitProfilePicture)}
+              className="space-y-4"
+            >
+              <FormField
+                name="profile_picture_url"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col items-center justify-center space-y-4 ">
+                    <FormControl>
+                      <ImageUpload
+                        onChange={field.onChange}
+                        value={field.value}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-center py-10">
+                <Button type="submit" className="rounded-md py-2">
+                  Submit
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </Card>
       </div>
     </div>
   );
