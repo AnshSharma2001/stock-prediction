@@ -16,7 +16,12 @@ import {
 
 interface GenericModelComponentProps {
   model?: Model; // Model is now optional
+
 }
+interface SelectValueProps {
+    placeholder?: string;
+    selectedTicker: string;
+  }
 
 // Default data to display if the model data is not loaded
 const defaultModel: Model = {
@@ -75,9 +80,11 @@ const GenericModelComponent: React.FC<GenericModelComponentProps> = ({
     return newData;
   };
   const updateChartData = (ticker: string, timeframe: Timeframe) => {
-    // TODO: Implementation to fetch stock data from an API 
-    // based on 'ticker' and 'timeframe'
-    // and update the 'chartData' state
+    const updateChartData = (ticker: string, timeframe: Timeframe) => {
+        // Since we're using generateRandomData, the ticker can be ignored
+        const newData = generateRandomData(timeframe);
+        setChartData(newData);
+      };
   };
 
   useEffect(() => {
@@ -109,11 +116,12 @@ const GenericModelComponent: React.FC<GenericModelComponentProps> = ({
                         <TabsTrigger value="1year">1 year</TabsTrigger>
                     </TabsList>
                 </Tabs>
-                <Select>
+                <Select defaultValue="AAPL" >
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select stock" >{selectedTicker}</SelectValue>
+                    <SelectValue placeholder=""  >{selectedTicker}</SelectValue> 
+
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent >
                         {tickers.map((ticker) => (
                             <SelectItem key={ticker} value={ticker} onClick={() => setSelectedTicker(ticker)}>
                                 {ticker}
@@ -128,7 +136,7 @@ const GenericModelComponent: React.FC<GenericModelComponentProps> = ({
                 <span className="text-muted-foreground">{model.Creator_Email}</span>
             </div>
             <p className="my-4">{model.Description}</p>
-            {/* Render other elements like comments and likes here */}
+
         </div>
     );
 };
