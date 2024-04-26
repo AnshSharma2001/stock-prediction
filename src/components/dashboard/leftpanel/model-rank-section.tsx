@@ -29,14 +29,19 @@ type Tag = {
 type ModelCategory = {
   favTech: Model[];
   favFinance: Model[];
+  favServices: Model[];
   dailyTech: Model[];
   dailyFinance: Model[];
+  dailyServices: Model[];
   weeklyTech: Model[];
   weeklyFinance: Model[];
+  weeklyServices: Model[];
   monthlyTech: Model[];
   monthlyFinance: Model[];
+  monthlyServices: Model[];
   yearlyTech: Model[];
   yearlyFinance: Model[];
+  yearlyServices: Model[];
 };
 
 const fetchModelTags = async (): Promise<Tag[]> => {
@@ -112,14 +117,19 @@ export const ModelRankSection: React.FC = () => {
   const [modelCategories, setModelCategories] = useState<ModelCategory>({
     favTech: [],
     favFinance: [],
+    favServices: [],
     dailyTech: [],
     dailyFinance: [],
+    dailyServices: [],
     weeklyTech: [],
     weeklyFinance: [],
+    weeklyServices: [],
     monthlyTech: [],
     monthlyFinance: [],
+    monthlyServices: [],
     yearlyTech: [],
     yearlyFinance: [],
+    yearlyServices: [],
   });
 
   const fetchedOnce = useRef(false);
@@ -171,12 +181,17 @@ export const ModelRankSection: React.FC = () => {
       setModelCategories({
         favTech: rankModelslikes(filterModelsByTag(models, "Technology")),
         favFinance: rankModelslikes(filterModelsByTag(models, "Finance")),
+        favServices: rankModelslikes(filterModelsByTag(models, "Services")),
         dailyTech: rankModelsByMSE(
           filterModelsByTag(models, "Technology"),
           "daily"
         ),
         dailyFinance: rankModelsByMSE(
           filterModelsByTag(models, "Finance"),
+          "daily"
+        ),
+        dailyServices: rankModelsByMSE(
+          filterModelsByTag(models, "Services"),
           "daily"
         ),
         weeklyTech: rankModelsByMSE(
@@ -187,6 +202,10 @@ export const ModelRankSection: React.FC = () => {
           filterModelsByTag(models, "Finance"),
           "weekly"
         ),
+        weeklyServices: rankModelsByMSE(
+          filterModelsByTag(models, "Services"),
+          "weekly"
+        ),
         monthlyTech: rankModelsByMSE(
           filterModelsByTag(models, "Technology"),
           "monthly"
@@ -195,12 +214,20 @@ export const ModelRankSection: React.FC = () => {
           filterModelsByTag(models, "Finance"),
           "monthly"
         ),
+        monthlyServices: rankModelsByMSE(
+          filterModelsByTag(models, "Services"),
+          "monthly"
+        ),
         yearlyTech: rankModelsByMSE(
           filterModelsByTag(models, "Technology"),
           "yearly"
         ),
         yearlyFinance: rankModelsByMSE(
           filterModelsByTag(models, "Finance"),
+          "yearly"
+        ),
+        yearlyServices: rankModelsByMSE(
+          filterModelsByTag(models, "Services"),
           "yearly"
         ),
       });
@@ -214,14 +241,19 @@ export const ModelRankSection: React.FC = () => {
         <>
           <ModelCategoryCarouselLoading rankingTitle="Users Favorites for Technology" />
           <ModelCategoryCarouselLoading rankingTitle="Users Favorites for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Users Favorites for Services" />
           <ModelCategoryCarouselLoading rankingTitle="Daily Best for Technology" />
           <ModelCategoryCarouselLoading rankingTitle="Daily Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Daily Best for Services" />
           <ModelCategoryCarouselLoading rankingTitle="Weekly Best for Technology" />
           <ModelCategoryCarouselLoading rankingTitle="Weekly Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Weekly Best for Services" />
           <ModelCategoryCarouselLoading rankingTitle="Monthly Best for Technology" />
           <ModelCategoryCarouselLoading rankingTitle="Monthly Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Monthly Best for Sevices" />
           <ModelCategoryCarouselLoading rankingTitle="Yearly Best for Technology" />
           <ModelCategoryCarouselLoading rankingTitle="Yearly Best for Finance" />
+          <ModelCategoryCarouselLoading rankingTitle="Yearly Best for Services" />
         </>
       ) : (
         <>
@@ -234,12 +266,20 @@ export const ModelRankSection: React.FC = () => {
             models={modelCategories.favFinance}
           />
           <ModelCategoryCarousel
+            rankingTitle="Users Favorites for Services"
+            models={modelCategories.favServices}
+          />          
+          <ModelCategoryCarousel
             rankingTitle="Daily Best for Technology"
             models={modelCategories.dailyTech}
           />
           <ModelCategoryCarousel
             rankingTitle="Daily Best for Finance"
             models={modelCategories.dailyFinance}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Daily Best for Services"
+            models={modelCategories.dailyServices}
           />
           <ModelCategoryCarousel
             rankingTitle="Weekly Best for Technology"
@@ -250,6 +290,10 @@ export const ModelRankSection: React.FC = () => {
             models={modelCategories.weeklyFinance}
           />
           <ModelCategoryCarousel
+            rankingTitle="Weekly Best for Services"
+            models={modelCategories.weeklyServices}
+          />
+          <ModelCategoryCarousel
             rankingTitle="Monthly Best for Technology"
             models={modelCategories.monthlyTech}
           />
@@ -258,12 +302,20 @@ export const ModelRankSection: React.FC = () => {
             models={modelCategories.monthlyFinance}
           />
           <ModelCategoryCarousel
+            rankingTitle="Monthly Best for Sevices"
+            models={modelCategories.monthlyServices}
+          />
+          <ModelCategoryCarousel
             rankingTitle="Yearly Best for Technology"
             models={modelCategories.yearlyTech}
           />
           <ModelCategoryCarousel
             rankingTitle="Yearly Best for Finance"
             models={modelCategories.yearlyFinance}
+          />
+          <ModelCategoryCarousel
+            rankingTitle="Yearly Best for Services"
+            models={modelCategories.yearlyServices}
           />
         </>
       )}

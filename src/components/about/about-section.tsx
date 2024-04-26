@@ -77,11 +77,9 @@ export function AboutSection() {
             <div className="mx-auto grid gap-6 lg:gap-12 items-start lg:max-w-[900px]">
               <div className="grid gap-2">
                 <p className="text-sm font-medium tracking-wide uppercase text-gray-500 dark:text-gray-400">
-                  March 16, 2023
                 </p>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Making the Right Bets: How Our Predictions Help You Win in the
-                  Stock Market
+                  Background
                 </h2>
                 <hr className="py-4" />
               </div>
@@ -94,45 +92,12 @@ export function AboutSection() {
               />
               <div className="grid gap-4">
                 <p className="text-lg leading-7 text-gray-600 md:text-xl dark:text-gray-300">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum. Lorem, ipsum dolor sit amet
-                  consectetur adipisicing elit. Vero vel unde minus temporibus
-                  tempore odio, illum velit id non sit, accusantium placeat,
-                  nisi veritatis molestias totam debitis alias sapiente
-                  quisquam?
+                TradeMinds is a venture in the realm of financial technology, set to revolutionize the field of stock market trading with community shared machine learning algorithms. The platform is a comprehensive ecosystem designed to empower users in their stock market endeavors. It achieves this through a unique blend of features, including data processing, intricate model evaluation, and an interface that allows for collaboration.
+
                 </p>
                 <p className="text-lg leading-7 text-gray-600 md:text-xl dark:text-gray-300">
-                  Dipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum. Lorem, ipsum dolor sit amet
-                  consectetur adipisicing elit. Vero vel unde minus temporibus
-                  tempore odio, illum velit id non sit, accusantium placeat,
-                  nisi veritatis molestias totam debitis alias sapiente
-                  quisquam?
-                </p>
-                <p className="text-lg leading-7 text-gray-600 md:text-xl dark:text-gray-300">
-                  Sed do eiusmod tempor incididunt ut labore et dolore magna
-                  aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-                  aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                  occaecat cupidatat non proident, sunt in culpa qui officia
-                  deserunt mollit anim id est laborum. Lorem, ipsum dolor sit
-                  amet consectetur adipisicing elit. Vero vel unde minus
-                  temporibus tempore odio, illum velit id non sit, accusantium
-                  placeat, nisi veritatis molestias totam debitis alias sapiente
-                  quisquam?
+                To achieve our goal, we worked with multiple applications including Python, React, Flask, Amazon Web Services, Cloudinary, and Vercel to build our product.
+
                 </p>
               </div>
             </div>
@@ -144,18 +109,41 @@ export function AboutSection() {
           <div className="mx-auto max-w-3xl">
             <div className="grid gap-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Our Commitment to Excellence
+                Key Requirements
               </h2>
               <hr className="py-4" />
 
               <p className="text-gray-500 dark:text-gray-400">
-                We are dedicated to providing our users with the most accurate
-                and insightful predictions to help them navigate the complex
-                world of the stock market. Our team of experts leverages the
-                latest technologies and data analysis tools to deliver
-                high-quality forecasts and actionable insights. With our
-                platform, you can make informed decisions and stay ahead of the
-                market trends.
+              Upload System: The user can upload a model and the backend will calculate the average MSE for the previous day, week, month, and year.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              Like System: Allow the user to like and therefore save any model they are interested in keeping an eye on for the future.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              Community Feedback: Allows the user to leave comments as well as like other comments on any models that they are viewing.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              Profile Page: Allow the user to view their liked models, and their own models that have created to have ease of access to the models they care about the most.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              Settings Page: Allow the user to change their password and profile picture for the web application.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              Model Visualization: On the home page dashboard and on the model pages. We provide visualization on how the model has performed on the stock market data.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              Backend Authorization: Create a secure authorization system for registering and logging to protect user data.
+
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+              About Page: Create an in depth about page for the user to get to know the product and the team behind it.
+
               </p>
             </div>
           </div>
@@ -167,31 +155,36 @@ export function AboutSection() {
           <div className="mx-auto max-w-3xl">
             <div className="grid gap-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                In the News
+                Architectural Design
               </h2>
               <hr className="py-4" />
               <ul className="grid gap-6">
                 <li className="grid gap-2">
                   <h3 className="text-2xl font-bold tracking-tighter sm:text-4xl">
-                    The Future of Finance: How AI is Transforming Stock Market
-                    Predictions
+                    Presentation/UI Layer
                   </h3>
                   <p className="text-gray-500 dark:text-gray-400">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  This layer consists of three main sections in the platform the Profile Page in which users can see the models they have created and liked, the Home Section which includes the top performing models and visualizations for each models, and the Login/Registration page where users can create an account and login into the website.
+
+                  </p>
+                </li>
+                
+                <li className="grid gap-2">
+                  <h3 className="text-2xl font-bold tracking-tighter sm:text-4xl">
+                    Computational Layer
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400">
+                  This layer is responsible for ranking our models in terms of best MSE values as well as likeability by the user base. It also includes calculating the values based off our backend data from our API and using it to see how well the model uploaded performs. Lastly it includes cleaning up the data from our API into nicer outputs for seamless visualization.
+                  
                   </p>
                 </li>
                 <li className="grid gap-2">
                   <h3 className="text-2xl font-bold tracking-tighter sm:text-4xl">
-                    Uncovering Hidden Gems: The Rise of Small-Cap Stocks
+                    Backend Layer
                   </h3>
                   <p className="text-gray-500 dark:text-gray-400">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  This layer is responsible for handling all user data and model data as well as fetching the data from the stock API. This layer involves building out the database and providing user endpoints.
+                  
                   </p>
                 </li>
               </ul>
@@ -204,10 +197,11 @@ export function AboutSection() {
           <div className="mx-auto max-w-3xl">
             <div className="grid gap-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                Our Partners
+                Summary/Future Work
               </h2>
               <p className="text-gray-500 dark:text-gray-400">
-                Trusted by the best in the industry. Our partners include...
+              In conclusion, the TradeMinds team has implemented a platform that allows for the user to upload models, view model visualizations, provide feedbacks as well as like models, and secure user authorization information. We believe that for the future work we can implement new ideas, as well as improve upon the current system. These ideas include having a more robust model upload feature that does not have as many constraints on the way the models needs to be uploaded and adding additional visualization for every model on their respective model page so that the user’s have more visual aids to improve knowledge and information about each model.
+
               </p>
             </div>
           </div>
